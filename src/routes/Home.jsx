@@ -1,9 +1,14 @@
+import { Container } from "reactstrap";
+import LogOutButton from "../components/LogOutButton";
 
 const Home = () => {
   return (
     <>
-      <h1> Moviesearch </h1>
-    
+      <Container>
+        <h1> Moviesearch </h1>
+      </Container>
+      {/* Temporary logout button */}
+      <LogOutButton />
     </>
   )
 };
