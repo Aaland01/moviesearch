@@ -1,0 +1,5 @@
+
+.clickable {
+  will-change: transform;
+  transition: transform 200ms;
+}
