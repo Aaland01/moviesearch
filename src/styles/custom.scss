@@ -2,7 +2,7 @@
 $primary: #668396;
 $secondary: #F8A626;
 $success: #9AB06C;
-$body-bg-dark: #424242;
+$body-bg-dark: #343330;
 
 // Adding custom themes
 
@@ -12,8 +12,7 @@ $body-bg-dark: #424242;
 
 // Custom theme colors
 $custom-map: (
-    "accent": #343330,
-    "background": #4A4945
+    "background": #343330,
 );
 
 $theme-colors: map-merge($custom-map, $theme-colors);
