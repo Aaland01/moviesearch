@@ -15,7 +15,7 @@ const SearchBar = () => {
 
     const tempSearch = "Star Wars"
 
-    return fetch(`${API_URL}/movie/search?${tempSearch}`, {
+    return fetch(`${API_URL}/movies/search?=${tempSearch}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const SearchBar = () => {
       <div className="mt-3 mb-5">
         <Row className="align-items-center justify-content-sm-center justify-content-start">
           <Col className="col-7 px-2 px-sm-0">
-            <input className="w-100 p-2 ps-4 bg-accent rounded-pill" type="search" name="search" id="search" 
+            <input className="w-100 p-2 px-3 bg-accent rounded-pill" type="search" name="search" id="search" 
               aria-labelledby="search-button"
               value={search}
               onChange={e => {
@@ -57,7 +57,7 @@ const SearchBar = () => {
           </Col>
           <Col className="col-2">
             <Button id="search-button" color="primary" type="button"
-            onClick={handleSearch()}
+            onClick={handleSearch}
             >
               Search
             </Button>
