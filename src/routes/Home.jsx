@@ -22,13 +22,17 @@ const Home = () => {
         <Row>
           <Col className="col-6">
             <h3> Movies by year </h3>
-            <div> Yearbuttons here </div>
+            <div className="tempbox"> Yearbuttons here </div>
           </Col>
           <Col className="col-6 border-3 border-start border-accent">
             <h3> Highlighted movie </h3>
-            <div> Movie component here </div>
+            <div className="tempbox"> Movie component here </div>
           </Col>
-          
+        </Row>
+        
+        <Row className="pt-3 border-3 border-top border-accent">
+          <h4> Some movies </h4>
+          <div className="tempbox"> Lots of movie cards here </div>
         </Row>
 
       </Container>

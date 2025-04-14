@@ -18,6 +18,8 @@ $custom-map: (
 
 $theme-colors: map-merge($custom-map, $theme-colors);
 
+$headings-color: $secondary;
+
 // import bootstrap - goes last to not override custom variables
 @import "../../node_modules/bootstrap/scss/bootstrap";
 

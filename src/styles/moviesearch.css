@@ -1,3 +1,7 @@
+.tempbox {
+  height: 50vh;
+}
+
 
 .clickable {
   will-change: transform;

@@ -96,7 +96,7 @@
   --bs-tertiary-color-rgb: 33, 37, 41;
   --bs-tertiary-bg: #f8f9fa;
   --bs-tertiary-bg-rgb: 248, 249, 250;
-  --bs-heading-color: inherit;
+  --bs-heading-color: #F8A626;
   --bs-link-color: #668396;
   --bs-link-color-rgb: 102, 131, 150;
   --bs-link-decoration: underline;
@@ -169,7 +169,7 @@
   --bs-danger-border-subtle: rgb(132, 31.8, 41.4);
   --bs-light-border-subtle: #495057;
   --bs-dark-border-subtle: #343a40;
-  --bs-heading-color: inherit;
+  --bs-heading-color: #F8A626;
   --bs-link-color: rgb(163.2, 180.6, 192);
   --bs-link-hover-color: rgb(181.56, 195.48, 204.6);
   --bs-link-color-rgb: 163, 181, 192;
