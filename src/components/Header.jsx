@@ -17,7 +17,7 @@ const Header = () => {
     <>
       <Login />
 
-      <Navbar className='px-4' color="accent" expand="md" dark>
+      <Navbar className='px-4' color="background" expand="md" dark>
 
         {/* Logo */}
         <NavbarBrand tag={Link} to="/">

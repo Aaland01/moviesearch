@@ -12,7 +12,8 @@ $body-bg-dark: #343330;
 
 // Custom theme colors
 $custom-map: (
-    "background": #343330,
+    "background": $body-bg-dark,
+    "accent": darken($body-bg-dark, 4%)
 );
 
 $theme-colors: map-merge($custom-map, $theme-colors);
