@@ -106,8 +106,8 @@ const Login = () => {
       },
       // temporary hardcoded credentials
       body: JSON.stringify({
-        email: "jamesd",
-        password: "jamesdpass"
+        email: "mike@gmail.com",
+        password: "password"
       }),
     })
     .then((res) => 
@@ -115,8 +115,9 @@ const Login = () => {
         .then((res) => {
           //!WARNING this is not industry standard or safe
           // but a simplification. Better methods later
-          localStorage.setItem("token", res.accessToken);
           console.log(res);
+          localStorage.setItem("token", res.bearerToken.token);
+          console.log(localStorage.getItem("token"))
           toggleLogin();
         })
     )
