@@ -71,3 +71,7 @@ img.poster {
   height: 2vw;
   width: 2vw;
 }
+
+.people {
+  max-width: 65vw;
+}
