@@ -24,6 +24,7 @@ $headings-color: $secondary;
 // import bootstrap - goes last to not override custom variables
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+// Overrides
 .modal-content {
     --bs-border-color: #{$primary};
 }
