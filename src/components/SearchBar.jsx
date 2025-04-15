@@ -56,7 +56,7 @@ const SearchBar = () => {
             />
           </Col>
           <Col className="col-2">
-            <Button id="search-button" color="primary" type="button"
+            <Button className="clickable" id="search-button" color="primary" type="button"
             onClick={handleSearch}
             >
               Search

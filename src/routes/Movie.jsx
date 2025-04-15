@@ -89,7 +89,7 @@ const Movie = () => {
     <>
       <Hero imagesrc={loading ? "movieposter.png" : movie.poster}/>
       <h1 className={loading ? "d-block" : "d-none"}>Loading movie..</h1>
-      <Container className={loading ? "d-none" : "d-block"}>
+      <Container className={`pb-5 ${loading ? "d-none" : "d-block"} `}>
         <Row className="justify-content-start">
           <Col className="text-center col-12 col-sm-auto">
             <div className="posterwrapper">
