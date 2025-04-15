@@ -1,8 +1,12 @@
 import { Col, Row } from "reactstrap";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Movies = () => {
+
+  const [movies, setMovies] = useState({})
+  const [search, setSearch] = useState({})
 
   return (
     <>

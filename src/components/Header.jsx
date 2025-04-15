@@ -1,7 +1,7 @@
 import { Button, Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink } from 'reactstrap'
 import { useState } from 'react'
 import Login from './Login';
-import { useLogin } from './LoginContext';
+import { useLogin } from '../assets/LoginContext';
 import { Link } from 'react-router-dom';
 import LogInButton from './LogInButton';
 import Logo from './Logo';

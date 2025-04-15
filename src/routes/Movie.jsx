@@ -162,7 +162,7 @@ const Movie = () => {
                 columnDefs={gridColumns}
                 rowData={involved}
                 onRowClicked={row => navigate(
-                  `/people?=${row.data.id}`
+                  `/people?id=${row.data.id}`
                 )}
               />
             </div>

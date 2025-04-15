@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './styles/moviesearch.css'
-import { LoginWrapper } from './components/LoginContext'
+import { LoginWrapper } from './assets/LoginContext'
 import Home from './routes/Home'
 import Logout from './components/Logout'
 import Header from './components/Header'

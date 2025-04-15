@@ -1,5 +1,5 @@
 import { Button, FormGroup, Input, Form, Label, Modal, ModalBody, ModalFooter, ModalHeader, FormFeedback} from 'reactstrap'
-import { useLogin } from './LoginContext';
+import { useLogin } from '../assets/LoginContext';
 import { useState } from 'react';
 import { API_URL } from '../Moviesearch';
 
@@ -10,7 +10,7 @@ import { API_URL } from '../Moviesearch';
 const Login = () => {
 
   // Login context
-  const {showLogin, toggleLogin} = useLogin();
+  const {showLogin, toggleLogin, message} = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -132,6 +132,9 @@ const Login = () => {
         </ModalHeader>
         <Form onSubmit={e => handleSubmit(e)}>
           <ModalBody>
+            {message && 
+              <div className='alert alert-info'>{message}</div>
+            }
             <FormGroup row>
               <Label for="email">
                 Email
