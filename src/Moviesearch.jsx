@@ -8,6 +8,7 @@ import Movies from './routes/Movies'
 import Movie from './routes/Movie'
 import Footer from './components/Footer'
 import People from './routes/People'
+import NavigationReset from './assets/NavigationReset'
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,6 +18,7 @@ function Moviesearch() {
     <>
       <BrowserRouter>
         <LoginWrapper>
+          <NavigationReset />
           <div className="d-flex flex-column min-vh-100">
             <Header />
             <main className="flex-grow-1">
