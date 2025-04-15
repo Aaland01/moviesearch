@@ -1,5 +1,7 @@
 .tempbox {
   height: 50vh;
+  margin: 5px;
+  border: 1px gray solid;
 }
 
 .clickable {
@@ -56,4 +58,16 @@ img.poster {
 
 .ag-cell {
   cursor: pointer;
+}
+
+.basement{
+  padding-bottom: 1vh;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.footerbadge{
+  height: 2vw;
+  width: 2vw;
 }

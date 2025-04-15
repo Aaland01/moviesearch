@@ -1,16 +1,10 @@
 import { Col, Container, Row } from "reactstrap";
-import LogOutButton from "../components/LogOutButton";
 import SearchBar from "../components/SearchBar";
 import Hero from "../components/Hero";
 
 const Home = () => {
   return (
     <>
-      <div className="fixed-bottom text-end p-2">
-        {/* Temporary logout button */}
-        <LogOutButton />
-      </div>
-
       <Hero imagesrc={"heroimage.png"} />
 
       <Container className="text-center">

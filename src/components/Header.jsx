@@ -4,6 +4,7 @@ import Login from './Login';
 import { useLogin } from './LoginContext';
 import { Link } from 'react-router-dom';
 import LogInButton from './LogInButton';
+import Logo from './Logo';
 
 
 const Header = () => {
@@ -21,7 +22,7 @@ const Header = () => {
 
         {/* Logo */}
         <NavbarBrand tag={Link} to="/">
-          <img className='clickable logo' src="MovieSearchLogo.png" />
+          <Logo />
         </NavbarBrand>
 
 
