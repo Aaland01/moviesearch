@@ -1,5 +1,6 @@
 import { Col, Row } from "reactstrap";
 import SearchBar from "../components/SearchBar";
+import { Link } from "react-router-dom";
 
 const Movies = () => {
 
@@ -13,6 +14,8 @@ const Movies = () => {
           <Row className="mx-2">
             <div className="tempbox border-secondary border-2 border text-center">
               Component placeholder
+              {/* TEMPORARY DEVELOPMENT LINK */}
+              <Link to={"/movie"}>See movie page </Link>
             </div>
           </Row>
         </Col>

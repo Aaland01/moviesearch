@@ -1,6 +1,7 @@
 import { Col, Container, Row } from "reactstrap";
 import LogOutButton from "../components/LogOutButton";
 import SearchBar from "../components/SearchBar";
+import Hero from "../components/Hero";
 
 const Home = () => {
   return (
@@ -10,9 +11,7 @@ const Home = () => {
         <LogOutButton />
       </div>
 
-      <div className="herowrapper">
-        <img src="heroimage.png" className="img-fluid"/>
-      </div>
+      <Hero imagesrc={"heroimage.png"} />
 
       <Container className="text-center">
         <h1 className="title"> Moviesearch </h1>

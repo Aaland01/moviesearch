@@ -5,6 +5,7 @@ import Home from './routes/Home'
 import Logout from './components/Logout'
 import Header from './components/Header'
 import Movies from './routes/Movies'
+import Movie from './routes/Movie'
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,7 @@ function Moviesearch() {
             {/* TEMPORARY LOGOUT, want it to be global modal */}
             <Route path='/logout' element={<Logout />} />
             <Route path='/movies' element={<Movies />} />
+            <Route path='/movie' element={<Movie />} />
           </Routes>
         </LoginWrapper>
       </BrowserRouter>

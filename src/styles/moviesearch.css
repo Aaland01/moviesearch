@@ -2,7 +2,6 @@
   height: 50vh;
 }
 
-
 .clickable {
   will-change: transform;
   transition: transform 200ms;
@@ -19,6 +18,10 @@
 
 .title {
   font-size: 6vw;
+}
+
+img.poster {
+  width: 15vw;
 }
 
 .herowrapper {
