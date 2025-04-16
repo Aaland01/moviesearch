@@ -1,23 +1,20 @@
-import { Button, Col, Row } from "reactstrap";
-import SearchBar from "../components/SearchBar";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Col, Row } from "reactstrap";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import GridTable from "../components/GridTable";
 import { API_URL } from "../Moviesearch";
+import SearchBar from "../components/SearchBar";
+import GridTable from "../components/GridTable";
 import SimpleYearFilter from "../components/SimpleYearFilter";
+import { ratingsPrettyPrint } from "../assets/ratingsPrint";
 
 const Movies = () => {
 
   const [movies, setMovies] = useState([])
   const [yearFilter, setYearFilter] = useState(null)
   const [loading, setLoading] = useState(true)
+
   const [params] = useSearchParams();
   const titleParam = params.get("title")
-
-  /**
-   * TODO
-   * Table size
-   */
 
   const navigate = useNavigate();
 
@@ -30,12 +27,12 @@ const Movies = () => {
     if (queryParams.toString()) {
       moviesURL += `?${queryParams.toString()}`
     }
+    // Development temporary
     console.log("Fetching movies from: ", moviesURL);
     
     fetch(moviesURL)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         return json.data;
       })
       .then(data => 
@@ -50,7 +47,6 @@ const Movies = () => {
         })
       ).then(movies => {
         setMovies(movies);
-        console.log("Movies retrieved");
         setLoading(false);
       })
       .catch((error) => {
@@ -58,24 +54,6 @@ const Movies = () => {
         setLoading(true)
       })
   }, [params, yearFilter])
-
-  const ratingsPrettyPrint = (movieObj) => {
-    const ratings = []
-    if(movieObj.imdbRating){
-      let imdbRating = movieObj.imdbRating.toString();
-      if(!imdbRating.includes(".")) imdbRating += ".0";
-      ratings.push(imdbRating)
-    } else ratings.push("\u00A0\u00A0\u00A0");
-
-    ratings.push(movieObj.rottenTomatoesRating ? movieObj.rottenTomatoesRating.toString() : "\u00A0\u00A0\u00A0\u00A0\u00A0");
-    ratings.push(movieObj.metacriticRating ? movieObj.metacriticRating.toString() : "");
-    
-    return ratings.join("\u00A0\u00A0\u00A0");
-  }
-
-  const handleApply = (selectedYear) => {
-    setYearFilter(selectedYear);
-  }
 
   const pageHeading = () => {
     let heading = "Movies"
@@ -93,6 +71,10 @@ const Movies = () => {
     {headerName: "Ratings", field: "ratings"},
     {headerName: "ID", field: "movieID", hide: true},
   ]
+
+  const handleApply = (selectedYear) => {
+    setYearFilter(selectedYear);
+  }
 
   return (
     <>
