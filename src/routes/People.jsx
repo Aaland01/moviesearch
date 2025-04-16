@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Container } from "reactstrap";
 import { API_URL } from "../Moviesearch";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import GridTable from "../components/GridTable";
 
 const People = () => {
+
+  const navigate = useNavigate();
 
   const [params] = useSearchParams();
   const personURL = `${API_URL}/people/${params.get("id")}`
@@ -47,8 +50,8 @@ const People = () => {
           birthYear: json.birthYear,
           deathYear: json.deathYear
         });
-        setMovies(json.roles)
-        setLoading(false)
+        setMovies((json.roles));
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error when requesting person: ", error.message)
@@ -56,13 +59,34 @@ const People = () => {
   }, [])
 
   const handle401 = (errorJSON) => {
-    
+    // Something to redirect
   }
   
-
   const handleError = (message) => {
     console.log(message);
   }
+  
+  /**
+   * 
+   * 
+   * {
+      "movieName": "Star Trek: First Contact",
+      "movieId": "tt0117731",
+      "category": "actor",
+      "characters": [
+        "Picard"
+      ],
+      "imdbRating": 7.6
+    }
+   */
+
+  const columns = [
+    {headerName: "Role", field: "category"},
+    {headerName: "Movie", field: "movieName"},
+    {headerName: "Characters", field: "characters"},
+    {headerName: "IMDBrating", field: "imdbRating"},
+    {headerName: "ID", field: "movieID", hide: true},
+  ]
 
   return (
     <>
@@ -77,9 +101,13 @@ const People = () => {
 
           <div className="text-start pt-3">
             <h4 className="ps-5">Movies</h4>
-            <div className="tempbox">
-
-            </div>
+            <GridTable 
+              rowData={movies}
+              columnDefs={columns}
+              onRowClicked={row => navigate(
+                `/movie?movieid=${row.data.movieID}`
+              )}
+            />
           </div>
           <div className="text-end pt-3">
             <h4 className="pe-5">Ratings at a glance</h4>
