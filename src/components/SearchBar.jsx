@@ -9,35 +9,12 @@ const SearchBar = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-  const [dummydata, setDummydata] = useState({})
-
-  const getDummydata = () => {
-
-    const tempSearch = "Star Wars"
-
-    return fetch(`${API_URL}/movies/search?=${tempSearch}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => 
-      res.json()
-        .then((res) => {
-          console.log(res);
-          setDummydata({
-
-          })
-        })
-    )
-    .catch( error => console.error(error))
-  }
-
   const handleSearch = () => {
     if (!search){
       console.log("No search parameters")
       return;
     }
-    let url = `/movie?title${search}`
+    let url = `/movies?title=${search}`
     console.log(`Navigating to: | ${url} |`);
     navigate(url)
   }
@@ -56,7 +33,12 @@ const SearchBar = () => {
             />
           </Col>
           <Col className="col-2">
-            <Button className="clickable" id="search-button" color="primary" type="button"
+            <Button 
+            className="clickable" 
+            disabled={search ? false : true} 
+            id="search-button" 
+            color="primary" 
+            type="button"
             onClick={handleSearch}
             >
               Search
