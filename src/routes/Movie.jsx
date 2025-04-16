@@ -2,16 +2,8 @@ import { useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import { Col, Row, Container, Badge, Button } from "reactstrap";
 import { API_URL } from "../Moviesearch";
-import { AgGridReact } from "ag-grid-react";
-import { gridTheme } from "../assets/aggridtheme";
-import { ModuleRegistry, ClientSideRowModelModule, ValidationModule, ColumnAutoSizeModule } from 'ag-grid-community'
-import { useNavigate } from "react-router-dom";
-
-ModuleRegistry.registerModules([
-  ClientSideRowModelModule,
-  ValidationModule,
-  ColumnAutoSizeModule
-]);
+import { useNavigate, useSearchParams } from "react-router-dom";
+import GridTable from "../components/GridTable";
 
 const Movie = () => {
 
@@ -33,12 +25,16 @@ const Movie = () => {
     classification: "PG"
   }
 
+  const [params] = useSearchParams();
+  const movieURL = `${API_URL}/movies/data/${params.get("movieID")}`
+
   const imdbID = tempMovie.imdbID;
 
   useEffect( () => {
-    fetch(`${API_URL}/movies/data/${imdbID}`)
+    fetch(movieURL)
       .then(response => response.json())
       .then(json => {
+        console.log(json);
         setMovie(
           {
             title: json.title,
@@ -53,6 +49,9 @@ const Movie = () => {
         setLoading(false);
         setInvolved(json.principals);
         setRatings(json.ratings);
+      })
+      .catch(error => {
+        console.error("Error fetching a movie", error.message);
       })
   }, []);
 
@@ -156,9 +155,7 @@ const Movie = () => {
           <Col className="ps-sm-4 border-start border-2 border-accent col-12 col-sm">
             <h3>People involved</h3>
             <div className="gridwrapper text-capitalize">
-              <AgGridReact
-                autoSizeStrategy={{type: "fitCellContents"}}
-                theme={gridTheme}
+              <GridTable
                 columnDefs={gridColumns}
                 rowData={involved}
                 onRowClicked={row => navigate(

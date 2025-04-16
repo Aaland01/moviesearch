@@ -13,7 +13,6 @@ const People = () => {
   const [person, setPerson] = useState({})
   const [movies, setMovies] = useState([])
   const [loading, setLoading] = useState(true)
-  const [authorized, setAuthorized] = useState(true)
 
   useEffect(() => {
     console.log(`Fetching from: \n -> ${personURL}` )
