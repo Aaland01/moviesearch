@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import GridTable from "../components/GridTable";
 import { API_URL } from "../Moviesearch";
+import YearFilter from "../components/YearFilter";
 
 const Movies = () => {
 
@@ -15,8 +16,7 @@ const Movies = () => {
 
   /**
    * TODO
-   * Slider istedenfor 2001 knapp
-   * Styling av size paa tables
+   * Table size
    */
 
   const navigate = useNavigate();
@@ -83,6 +83,15 @@ const Movies = () => {
 
   }
 
+  const pageHeading = () => {
+    let heading = "Movies"
+
+    if (titleParam) heading += ` containing ${titleParam} in title`
+    if (yearFilter) heading += `, from ${yearFilter}`;
+    else return "All " + heading
+    return heading
+  }
+
   const columns = [
     {headerName: "Title", field: "title"},
     {headerName: "Year", field: "year"},
@@ -98,22 +107,17 @@ const Movies = () => {
           <Row>
             <h5>Filter by year:</h5>
           </Row>
-          <Row className="mx-2">
-            <div className="tempbox border-secondary border-2 border text-center">
-              Component placeholder
-              {/* TEMPORARY DEVELOPMENT LINK */}
-              <div>
-                <Link to={"/movie"}>See movie page </Link>
-              </div>
-            </div>
-            <div>
-              <Button onClick={e => handleYearBtn(e)} color="success">2001</Button>
-              <Button onClick={handleApply} color="info">Apply</Button>
-            </div>
-          </Row>
+
+          <YearFilter />
+
+          <div className="mt-5">
+            <Button onClick={e => handleYearBtn(e)} color="success">2001</Button>
+            <Button onClick={handleApply} color="info">Apply</Button>
+          </div>
+
         </Col>
         <Col className="col-9">
-          <h2> Movies containing {titleParam} in title{yearFilter ? `, from ${yearFilter}` : ""}</h2>
+          <h2> {pageHeading()} </h2>
           <SearchBar />
           
           <GridTable 

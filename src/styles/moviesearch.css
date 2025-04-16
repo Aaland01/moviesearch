@@ -75,3 +75,9 @@ img.poster {
 .people {
   max-width: 65vw;
 }
+
+.year-display {
+  text-align: center;
+  font-size: 24px;
+  width: auto;
+}
