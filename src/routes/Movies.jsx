@@ -73,15 +73,15 @@ const Movies = () => {
     return ratings.join("\u00A0\u00A0\u00A0");
   }
 
-  const handleApply = () => {
-
+  const handleApply = (selectedYear) => {
+    setYearFilter(selectedYear);
   }
 
   const pageHeading = () => {
     let heading = "Movies"
 
-    if (titleParam) heading += ` containing ${titleParam} in title`
-    if (yearFilter) heading += `, from ${yearFilter}`;
+    if (titleParam) heading += ` titled "${titleParam}"`
+    if (yearFilter) heading += ` from ${yearFilter}`;
     else return "All " + heading
     return heading
   }
@@ -102,15 +102,11 @@ const Movies = () => {
             <h5>Filter by year:</h5>
           </Row>
 
-          <SimpleYearFilter />
-
-          <div className="mt-5">
-            <Button onClick={handleApply} color="info">Apply</Button>
-          </div>
+          <SimpleYearFilter onApply={handleApply}/>
 
         </Col>
         <Col className="col-9">
-          <h2> {pageHeading()} </h2>
+          <h2 className="ps-5"> {pageHeading()} </h2>
           <SearchBar />
           
           <GridTable 

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button } from "reactstrap";
 
-const SimpleYearFilter = () => {
+const SimpleYearFilter = ({ onApply }) => {
 
   const currentYear = 2025;
-  const startYear = 1950;
+  const startYear = 1990;
 
   const years = Array.from(
     { length: currentYear - startYear + 1 }, 
@@ -21,6 +21,10 @@ const SimpleYearFilter = () => {
   const handleYearSet = (year) => {
     console.log(year);
     selectYear(year);
+  }
+
+  const applyFilter = () => {
+    onApply(selectedYear);
   }
 
   return (
@@ -41,7 +45,15 @@ const SimpleYearFilter = () => {
           ))}
         </select>
       </div>
-      <Button className="mt-5" size="sm" onClick={clear} color="primary">Clear</Button>
+      <div>
+        <Button className="mt-3" size="md" onClick={applyFilter} color="success">
+          Apply
+        </Button>
+      </div>
+      <Button className="mt-2" size="sm" onClick={clear} color="primary">
+        Clear
+      </Button>
+
 
     </>
   )
