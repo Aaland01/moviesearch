@@ -4,7 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import GridTable from "../components/GridTable";
 import { API_URL } from "../Moviesearch";
-import YearFilter from "../components/YearFilter";
+import SimpleYearFilter from "../components/SimpleYearFilter";
 
 const Movies = () => {
 
@@ -73,12 +73,6 @@ const Movies = () => {
     return ratings.join("\u00A0\u00A0\u00A0");
   }
 
-  const handleYearBtn = (e) => {
-    let yearValue = e.target.innerText
-    console.log("Yearbutton:",yearValue)
-    setYearFilter(yearValue);
-  }
-
   const handleApply = () => {
 
   }
@@ -108,10 +102,9 @@ const Movies = () => {
             <h5>Filter by year:</h5>
           </Row>
 
-          <YearFilter />
+          <SimpleYearFilter />
 
           <div className="mt-5">
-            <Button onClick={e => handleYearBtn(e)} color="success">2001</Button>
             <Button onClick={handleApply} color="info">Apply</Button>
           </div>
 
