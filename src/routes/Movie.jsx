@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import Hero from "../components/Hero";
 import { Col, Row, Container, Badge, Button } from "reactstrap";
 import { API_URL } from "../Moviesearch";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import GridTable from "../components/GridTable";
+import Hero from "../components/Hero";
+import { boxofficePrettyPrint } from "../assets/PrettyPrints";
 
 const Movie = () => {
 
@@ -67,35 +68,6 @@ const Movie = () => {
     }
   }
 
-  const runtimePrettyPrint = (runtime) => {
-    if(!runtime){
-      return "";
-    }
-    let hours = Math.floor( runtime / 60 )
-    let minutes = runtime - hours*60;
-    return `${hours} hours, ${minutes} minutes`;
-  }
-
-  const boxofficePrettyPrint = (boxoffice) => {
-    if (!boxoffice) return "No Records";
-    let numberString = boxoffice.toString();
-    let print = ""
-    for(let i = 1; i < numberString.length; i++){
-      if ((numberString.length - i) % 3 === 0){
-        print += " ";
-      }
-      print += numberString[i]
-    }
-    return `${print} $`;
-  }
-
-  const gridColumns = [
-    {headerName: "Role", field: "category"},
-    {headerName: "Name", field: "name"},
-    {headerName: "Character", field: "characters"},
-    {headerName: "Id", field: "id", hide: true},
-  ]
-
   const posterSrc = () => {
     if (loading) {
       return (
@@ -112,6 +84,13 @@ const Movie = () => {
       )
     }
   }
+
+  const gridColumns = [
+    {headerName: "Role", field: "category"},
+    {headerName: "Name", field: "name"},
+    {headerName: "Character", field: "characters"},
+    {headerName: "Id", field: "id", hide: true},
+  ]
 
   return (
     <>

@@ -18,24 +18,24 @@ const Movies = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const moviesURL = () => {
     let moviesURL = `${API_URL}/movies/search`
-
     const queryParams = new URLSearchParams();
     if (titleParam) queryParams.append("title",titleParam);
     if (yearFilter) queryParams.append("year",yearFilter);
     if (queryParams.toString()) {
       moviesURL += `?${queryParams.toString()}`
     }
-    // Development temporary
-    console.log("Fetching movies from: ", moviesURL);
-    
-    fetch(moviesURL)
-      .then(response => response.json())
-      .then(json => {
-        return json.data;
-      })
-      .then(data => 
+    console.log("Crafted moviesURL: ", moviesURL)
+    return moviesURL;
+  }
+
+  const fetchMovies = async () => {
+    try {
+      const response = await fetch(moviesURL())
+      const json = await response.json()
+      const data = json.data
+      setMovies(
         data.map( movie => {
           return {
             title: movie.title,
@@ -45,19 +45,19 @@ const Movies = () => {
             movieID: movie.imdbID,
           }
         })
-      ).then(movies => {
-        setMovies(movies);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching movies: ", error.message);
-        setLoading(true)
-      })
+      )
+      setLoading(false)
+    } catch (error) {
+      console.error("Error retrieving data", error.message)
+    }
+  }
+
+  useEffect(() => {
+    fetchMovies()
   }, [params, yearFilter])
 
   const pageHeading = () => {
     let heading = "Movies"
-
     if (titleParam) heading += ` titled "${titleParam}"`
     if (yearFilter) heading += ` from ${yearFilter}`;
     else return "All " + heading
