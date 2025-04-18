@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 import GridTable from "../components/GridTable";
 import SimpleYearFilter from "../components/SimpleYearFilter";
 import { ratingsPrettyPrint } from "../assets/ratingsPrint";
+import infiniteDatasource from "../assets/infiniteDatasource";
 
 const Movies = () => {
 
@@ -17,6 +18,11 @@ const Movies = () => {
   const titleParam = params.get("title")
 
   const navigate = useNavigate();
+
+  const datasource = infiniteDatasource("/movies/search",{
+    ...(titleParam ? {title: titleParam} : {}),
+    ...(yearFilter ? { year: yearFilter} : {}),
+  });
 
   const moviesURL = () => {
     let moviesURL = `${API_URL}/movies/search`
@@ -92,10 +98,11 @@ const Movies = () => {
           <SearchBar />
           
           <GridTable 
+            datasource={datasource}
             columnDefs={columns} 
-            rowData={movies} 
-            onRowClicked={(row) => navigate(
-              `/movie?movieID=${row.data.movieID}`
+            //rowData={movies} 
+            onRowClicked={(row) => 
+              navigate(`/movie?movieID=${row.data.movieID}`
             )} 
           />
           

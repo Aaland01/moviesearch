@@ -1,19 +1,22 @@
 import { AgGridReact } from "ag-grid-react";
 import { gridTheme } from "../assets/aggridtheme";
-import { ModuleRegistry, ClientSideRowModelModule, ValidationModule, ColumnAutoSizeModule } from 'ag-grid-community'
+import { ModuleRegistry, ClientSideRowModelModule, ValidationModule, ColumnAutoSizeModule, InfiniteRowModelModule } from 'ag-grid-community'
 
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   ValidationModule,
-  ColumnAutoSizeModule
+  ColumnAutoSizeModule,
+  InfiniteRowModelModule,
 ]);
 
 
-const GridTable = ({columnDefs, rowData, onRowClicked}) => {
+const GridTable = ({datasource, columnDefs, rowData, onRowClicked}) => {
   return (
     <>
       <div className="gridwrapper text-capitalize">
         <AgGridReact
+          rowModelType="infinite"
+          datasource={datasource}
           autoSizeStrategy={{type: "fitCellContents"}}
           theme={gridTheme}
           columnDefs={columnDefs}
