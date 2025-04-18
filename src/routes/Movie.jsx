@@ -100,7 +100,7 @@ const Movie = () => {
         <Row className="justify-content-start">
           <Col className="text-center col-12 col-sm-auto">
             <div className="posterwrapper">
-              <img className="poster" src={posterSrc()}></img>
+              <img className="poster" src={posterSrc()} alt={`Poster for ${movie.title}`}/>
             </div>
             <p className="caption"> Small poster caption </p>
           </Col>
