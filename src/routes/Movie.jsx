@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
-import Hero from "../components/Hero";
 import { Col, Row, Container, Badge, Button } from "reactstrap";
 import { API_URL } from "../Moviesearch";
-import { AgGridReact } from "ag-grid-react";
-import { gridTheme } from "../assets/aggridtheme";
-import { ModuleRegistry, ClientSideRowModelModule, ValidationModule, ColumnAutoSizeModule } from 'ag-grid-community'
-import { useNavigate } from "react-router-dom";
-
-ModuleRegistry.registerModules([
-  ClientSideRowModelModule,
-  ValidationModule,
-  ColumnAutoSizeModule
-]);
+import { useNavigate, useSearchParams } from "react-router-dom";
+import GridTable from "../components/GridTable";
+import Hero from "../components/Hero";
+import { boxofficePrettyPrint, runtimePrettyPrint } from "../assets/PrettyPrints";
 
 const Movie = () => {
 
@@ -23,59 +16,73 @@ const Movie = () => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
 
-  const tempMovie = {
-    title: "Star Wars: Episode I - The Phantom Menace",
-    year: 1999,
-    imdbID: "tt0120915",
-    imdbRating: 6.5,
-    rottenTomatoesRating: 51,
-    metacriticRating: 51,
-    classification: "PG"
-  }
+  const [params] = useSearchParams();
+  const movieURL = `${API_URL}/movies/data/${params.get("movieID")}`
 
-  const imdbID = tempMovie.imdbID;
+  const fetchMovieData = async () => {
+    try {
+      const response = await fetch(movieURL)
+      const json = await response.json()
+      console.log(json);
+      const poster = await handlePoster(json.poster);
+      setMovie(
+        {
+          title: json.title,
+          year: json.year,
+          country: json.country,
+          runtime: json.runtime,
+          boxoffice: json.boxoffice,
+          plot: json.plot,
+          poster: poster,
+        }
+      )
+      setGenres(json.genres);
+      setRatings(json.ratings)
+      setLoading(false);
+      setInvolved(json.principals);
+    } catch (error) {
+      console.error("Error fetching movie data", error.message)
+    }
+  }
 
   useEffect( () => {
-    fetch(`${API_URL}/movies/data/${imdbID}`)
-      .then(response => response.json())
-      .then(json => {
-        setMovie(
-          {
-            title: json.title,
-            year: json.year,
-            runtime: json.runtime,
-            boxoffice: json.boxoffice,
-            plot: json.plot,
-            poster: json.poster
-          }
-        );
-        setGenres(json.genres);
-        setLoading(false);
-        setInvolved(json.principals);
-        setRatings(json.ratings);
-      })
+    fetchMovieData();
   }, []);
 
-  const runtimePrettyPrint = (runtime) => {
-    if(!runtime){
-      return "";
+  const handlePoster = async (posterSRC) => {
+    try {
+      const res = await fetch(
+        posterSRC, { 
+          method: "HEAD"}
+      );
+      if (res.ok) {
+        console.log(`Source ok: ${posterSRC}`);
+        return posterSRC;
+      } else {
+        console.warn(`Poster unavailable: ${posterSRC}`);
+        return null
+      }
+    } catch (error) {
+      console.error("Error checking poster: ", error.message );
+      return null
     }
-    let hours = Math.floor( runtime / 60 )
-    let minutes = runtime - hours*60;
-    return `${hours} hours, ${minutes} minutes`;
   }
 
-  const boxofficePrettyPrint = (boxoffice) => {
-    if (!boxoffice) return "No Data";
-    let numberString = boxoffice.toString();
-    let print = ""
-    for(let i = 1; i < numberString.length; i++){
-      if ((numberString.length - i) % 3 === 0){
-        print += " ";
-      }
-      print += numberString[i]
+  const posterSrc = () => {
+    if (loading) {
+      return (
+        "logo.png"
+      )
     }
-    return `${print} $`;
+    if (movie.poster) {
+      return (
+        movie.poster
+      )
+    } else {
+      return (
+        "logo.png"
+      )
+    }
   }
 
   const gridColumns = [
@@ -87,19 +94,20 @@ const Movie = () => {
 
   return (
     <>
-      <Hero imagesrc={loading ? "movieposter.png" : movie.poster}/>
+      <Hero imagesrc={posterSrc()}/>
       <h1 className={loading ? "d-block" : "d-none"}>Loading movie..</h1>
       <Container className={`pb-5 ${loading ? "d-none" : "d-block"} `}>
         <Row className="justify-content-start">
           <Col className="text-center col-12 col-sm-auto">
             <div className="posterwrapper">
-              <img className="poster" src={movie.poster}></img>
+              <img className="poster" src={posterSrc()}></img>
             </div>
             <p className="caption"> Small poster caption </p>
           </Col>
           <Col className="col-12 col-sm-7 col-xl-8">
             <h1>{movie.title}</h1>
             <h5>{movie.year}</h5>
+            <h6 className="pb-1 pb-md-4">{movie.country}</h6>
             <h6 className="d-inline"> Runtime: </h6>
             <div className="d-inline "> 
               {runtimePrettyPrint(movie.runtime)}
@@ -113,8 +121,9 @@ const Movie = () => {
                 ))
               }
             </div>
-            <div className="buttonwrapper text-end">
-              <Button color="primary"
+            <div className="buttonwrapper mt-3 m-md-1 text-start text-md-end">
+              <Button 
+                color="primary"
                 onClick={() => {
                   document.getElementById("ratings")
                     .scrollIntoView({behavior: "smooth"})
@@ -131,16 +140,20 @@ const Movie = () => {
             <h3 id="ratings">Ratings</h3>
             <div className="ps-4">
               {
-                ratings.map((rating) => (
-                  <figure key={rating.source}> 
-                    <blockquote className="blockquote">
-                      <p>{rating.value}</p>
-                    </blockquote>
-                    <figcaption className="blockquote-footer">
-                      <cite title={rating.source}>{rating.source}</cite>
-                    </figcaption>
-                  </figure>
-                ))
+                ratings.map((rating) => {
+                  if (!rating.value) {
+                    rating.value = "No rating"
+                  } return (
+                      <figure key={rating.source}> 
+                        <blockquote className="blockquote">
+                          <p>{rating.value}</p>
+                        </blockquote>
+                        <figcaption className="blockquote-footer">
+                          <cite title={rating.source}>{rating.source}</cite>
+                        </figcaption>
+                      </figure>
+                  )
+                })
               }
             </div>
             <div >
@@ -153,15 +166,13 @@ const Movie = () => {
             </div>
           </Col>
 
-          <Col className="ps-sm-4 border-start border-2 border-accent col-12 col-sm">
+          <Col className="ps-sm-4 border-start border-2 border-accent col-12 col-sm-7">
             <h3>People involved</h3>
             <div className="gridwrapper text-capitalize">
-              <AgGridReact
-                autoSizeStrategy={{type: "fitCellContents"}}
-                theme={gridTheme}
-                columnDefs={gridColumns}
-                rowData={involved}
-                onRowClicked={row => navigate(
+              <GridTable
+                columnDefs = {gridColumns}
+                data = {involved}
+                onRowClicked = {row => navigate(
                   `/people?id=${row.data.id}`
                 )}
               />

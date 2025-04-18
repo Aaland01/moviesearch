@@ -53,7 +53,8 @@ img.poster {
 }
 
 .gridwrapper {
-  height: 500px;
+  width: 70vw;
+  height: 100vh;
 }
 
 .ag-cell {
@@ -74,4 +75,10 @@ img.poster {
 
 .people {
   max-width: 65vw;
+}
+
+.year-display {
+  text-align: center;
+  font-size: 24px;
+  width: auto;
 }

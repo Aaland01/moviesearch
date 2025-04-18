@@ -7,5 +7,6 @@ export const gridTheme = themeMaterial
         {
             accentColor: "#F8A626",
             headerTextColor: "#F8A626",
+            backgroundColor: "#292926",
         }
     )

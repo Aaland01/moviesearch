@@ -1,12 +1,52 @@
 import { Col, Row } from "reactstrap";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import SearchBar from "../components/SearchBar";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import GridTable from "../components/GridTable";
+import SimpleYearFilter from "../components/SimpleYearFilter";
+import infiniteDatasource from "../assets/infiniteDatasource";
 
 const Movies = () => {
 
-  const [movies, setMovies] = useState({})
-  const [search, setSearch] = useState({})
+  const [yearFilter, setYearFilter] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const moviesURL = "/movies/search"
+  const [params] = useSearchParams();
+  const titleParam = params.get("title")
+
+  const navigate = useNavigate();
+
+  const searchParams = () => {
+    const queryParams = new URLSearchParams();
+    if (titleParam) queryParams.append("title",titleParam);
+    if (yearFilter) queryParams.append("year",yearFilter);
+    return queryParams;
+  }
+
+  const datasource = infiniteDatasource(moviesURL,searchParams());
+
+  const pageHeading = () => {
+    let heading = "Movies"
+    if (titleParam) heading += ` titled "${titleParam}"`
+    if (yearFilter) heading += ` from ${yearFilter}`;
+    else return "All " + heading
+    return heading
+  }
+
+  const columns = [
+    {headerName: "Title", field: "title"},
+    {headerName: "Year", field: "year"},
+    {headerName: "Classification", field: "classification"},
+    {headerName: "IMDB", field: "imdbRating"},
+    {headerName: "RottenTomatoes", field: "rottenTomatoesRating"},
+    {headerName: "Metacritic", field: "metacriticRating"},
+    {headerName: "ID", field: "imdbID", hide: true},
+  ]
+
+  const handleApply = (selectedYear) => {
+    setYearFilter(selectedYear);
+  }
 
   return (
     <>
@@ -15,21 +55,23 @@ const Movies = () => {
           <Row>
             <h5>Filter by year:</h5>
           </Row>
-          <Row className="mx-2">
-            <div className="tempbox border-secondary border-2 border text-center">
-              Component placeholder
-              {/* TEMPORARY DEVELOPMENT LINK */}
-              <Link to={"/movie"}>See movie page </Link>
-            </div>
-          </Row>
+
+          <SimpleYearFilter onApply={handleApply}/>
+
         </Col>
         <Col className="col-9">
-          <h2> Movies containing {"{search}"} in title, from {"{year}"}</h2>
+          <h2 className="ps-5"> {pageHeading()} </h2>
           <SearchBar />
-          <div className="tempbox border-secondary border-2 border text-center">
-             Component placeholder
-          </div>
           
+          <GridTable infinite = {true}
+            data = {datasource}
+            columnDefs = {columns} 
+            onRowClicked={(row) => {
+              console.log(row.data);
+              navigate(`/movie?movieID=${row.data.imdbID}`
+              )} 
+            }
+          />
         </Col>
       </Row>
     </>

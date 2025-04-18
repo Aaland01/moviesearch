@@ -56,7 +56,7 @@ const Login = () => {
       updateErrorfield("Email cannot exceed 30 characters", true)
     }
     else if (checkRegex(emailInput)) {
-      updateErrorfield("Email cannot contain symbols or spaces", true)
+      updateErrorfield("Invalid Email format.", true)
     }
     else {
       clearErrorfield();
@@ -71,8 +71,8 @@ const Login = () => {
   const checkRegex = (email) => {
     // Arbitrary validation only accepting letters, numbers, dots and a single @
     // Valid: abc.123@abc.com
-    let regex = /[^a-zA-Z0-9@.]+@[a-zA-Z.]+$/;  // ^ - NOT, so NOT matching a-Z, 0-9,@,.
-    return regex.test(email)
+    let regex = /[a-zA-Z0-9._]+@[a-zA-Z.-]+$/;  // ^ - NOT, so NOT matching a-Z, 0-9,@,.
+    return !regex.test(email)
   }
 
   const updateErrorfield = (string, invalid) => {
