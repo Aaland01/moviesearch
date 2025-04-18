@@ -1,7 +1,6 @@
 import { Badge, Button, Col, Row } from "reactstrap";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
-import LogOutButton from "./LogOutButton";
 
 const Footer = () => {
 
@@ -33,7 +32,6 @@ const Footer = () => {
           </Col>
 
           <Col className="order-5 text-end">
-            <LogOutButton className="me-2" />
             <Link to={"/"}>
               <Logo />
             </Link>
