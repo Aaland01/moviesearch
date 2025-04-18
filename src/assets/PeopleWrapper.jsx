@@ -1,17 +1,17 @@
-import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useLogin } from "./LoginContext";
 import { useEffect } from "react";
 
-const PeopleWrapper = ({children }) => {
+const PeopleWrapper = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  const { toggleLogin } = useLogin();
+  const { toggleLogin, setMessage } = useLogin();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      toggleLogin("You need an account to access this content")
+      setMessage("You need an account to access this content.")
+      toggleLogin;
     }
-  }, [isAuthenticated, toggleLogin])
+  }, [isAuthenticated])
 
   return isAuthenticated ? children : null;
 };

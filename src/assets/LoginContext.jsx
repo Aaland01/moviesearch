@@ -8,16 +8,12 @@ export const LoginWrapper = ({children}) => {
     const [showLogin, setShowLogin] = useState(false);
     const [message, setMessage] = useState("");
 
-    const toggleLogin = (alert = "") => {
+    const toggleLogin = () => {
         setShowLogin(prev => !prev);
-        if(message){
-            alert="";
-        }
-        setMessage(alert)
     }
 
     return (
-        <LoginContext.Provider value={{ showLogin, toggleLogin}}>
+        <LoginContext.Provider value={{ showLogin, toggleLogin, message, setMessage}}>
             {children}
         </LoginContext.Provider>
     )
