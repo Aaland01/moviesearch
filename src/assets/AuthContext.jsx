@@ -10,22 +10,37 @@ export const AuthWrapper = ({children}) => {
   const [isloading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      console.log(" - Authenticated - ")
+    const bearerToken = localStorage.getItem("bearerToken");
+    // THEN CHECK FOR REFRESH
+    if (bearerToken) {
+      console.log(" - BearerToken exists - ")
       setAuthenticated(true);
+    } else {
+      console.error("Token not gotten:", bearerToken)
     }
     setLoading(false);
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem("token", token);
+  /**
+   * 
+   * @param {String} bearerToken 
+   * @param {String} refreshToken 
+   * Stores (DANGEROUS) tokens in localstorage and updates authenticated context
+   */
+  const login = (bearerToken, refreshToken) => {
+    localStorage.setItem("bearerToken", bearerToken);
+    localStorage.setItem("refreshToken", refreshToken);
     setAuthenticated(true);
   }
 
+  /**
+   * Removes tokens from local storage and updates authenticated context
+   */
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("bearerToken");
+    localStorage.removeItem("refreshToken");
     setAuthenticated(false);
+    console.log("[AUTHcon] Logged out")
   };
 
   return (

@@ -2,6 +2,7 @@ import { Button, FormGroup, Input, Form, Label, Modal, ModalBody, ModalFooter, M
 import { useLogin } from '../assets/LoginContext';
 import { useState } from 'react';
 import { API_URL } from '../Moviesearch';
+import { useAuth } from '../assets/AuthContext';
 
 /**
    * API url for the project
@@ -10,7 +11,7 @@ import { API_URL } from '../Moviesearch';
 const Login = () => {
 
   // Login context
-  const {showLogin, toggleLogin, message} = useLogin();
+  const {showLogin, toggleLogin, message, setMessage} = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,37 +19,36 @@ const Login = () => {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const login = () => {
-    const url = `${API_URL}/user/login`;
+  const { login } = useAuth();
 
-    return fetch( url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  const handleLogin = async () => {
+
+    const loginURL = `${API_URL}/user/login`;
+    const requestOptions = {
+      method:"POST", 
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         email: email,
         password: password
       }),
-    })
-    .then((res) => 
-      res.json()
-        .then((res) => {
-          if(res.error){
-            updateErrorfield(res.message, true);
-            console.log(res)
-            return;
-          }
-          //!WARNING this is not industry standard or safe
-          // but a simplification. Better methods later
-          localStorage.setItem("token", res.accessToken)
-          console.log(res)
-          toggleLogin;
-        })
-    )
-    .catch(error => console.error(error));
-  };
+    }
 
+    try {
+      const response = await fetch(loginURL, requestOptions)
+      const json = await response.json()
+      if (json.error) updateErrorfield(json.message, true);
+      else {
+        login(json.bearerToken.token, json.refreshToken.token);
+        toggleLogin;
+        setMessage("");
+      }
+      console.log(json);
+
+    } catch (error) {
+      console.error("Error handling login request:", error.message)
+    }
+  }
+  
   const handleEmailChange = (e) => {
     const { value: emailInput } = e.target;
 
@@ -88,8 +88,15 @@ const Login = () => {
   const handleSubmit = () => {
     e.preventDefault();
     if (!invalidEmail){
-      login();  
+      handleLogin();  
     }
+  }
+
+  const cancel = () => {
+    setEmail("");
+    setPassword("");
+    toggleLogin;
+    setMessage("");
   }
 
   /**
@@ -97,31 +104,9 @@ const Login = () => {
    * Cheatloging to avoid entering details
    */
   const cheatLogin = () => {
-    const url = `${API_URL}/user/login`;
-
-    return fetch( url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // temporary hardcoded credentials
-      body: JSON.stringify({
-        email: "mike@gmail.com",
-        password: "password"
-      }),
-    })
-    .then((res) => 
-      res.json()
-        .then((res) => {
-          //!WARNING this is not industry standard or safe
-          // but a simplification. Better methods later
-          console.log(res);
-          localStorage.setItem("token", res.bearerToken.token);
-          console.log(localStorage.getItem("token"))
-          toggleLogin();
-        })
-    )
-    .catch(error => console.error(error));
+    setEmail("mike@gmail.com");
+    setPassword("password")
+    setMessage("Cheater!")
   };
 
   return (
@@ -133,7 +118,7 @@ const Login = () => {
         <Form onSubmit={e => handleSubmit(e)}>
           <ModalBody>
             {message && 
-              <div className='alert alert-info'>{message}</div>
+              <div className='alert alert-secondary'>{message}</div>
             }
             <FormGroup row>
               <Label for="email">
@@ -152,7 +137,7 @@ const Login = () => {
               />
             {
               (
-                <FormFeedback>
+                <FormFeedback valid={!invalidEmail}>
                   {errorMessage}
                 </FormFeedback>
               )
@@ -176,7 +161,7 @@ const Login = () => {
           </ModalBody>
           <ModalFooter>
             <Button color="success" type='submit' disabled={invalidEmail}>Log in</Button>
-            <Button color="danger" onClick={toggleLogin}>Cancel</Button>
+            <Button color="danger" onClick={cancel}>Cancel</Button>
             {/*  Cheatlogin for development   */}
             <div>
               <Button color="secondary" onClick={cheatLogin}>cheatLogin</Button>

@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, Row, Col } from "reactstrap";
+import { useAuth } from "../assets/AuthContext";
 
 const Logout = () => {
 
   const navigate = useNavigate();
 
+  const { logout } = useAuth();
+
   const handleLogout = () => {
     // some call to API 
     // + removing tokens from localstorage
     console.log("[LOGOUT] --- Logging out")
+    logout();
     toggleLogout();
   }
 
