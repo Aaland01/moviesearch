@@ -1,6 +1,7 @@
-import { Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink } from 'reactstrap'
+import { Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink, NavbarText } from 'reactstrap'
 import { useState } from 'react'
 import Login from './Login';
+import { useAuth } from '../assets/AuthContext';
 import { Link } from 'react-router-dom';
 import LogInButton from './LogInButton';
 import Logo from './Logo';
@@ -12,6 +13,20 @@ const Header = () => {
 
   const toggleNav = () => setCollapse(!collapse)
 
+  const { user } = useAuth();
+  
+  const register = (
+    <NavLink tag={Link} to="/Register">
+      Register
+    </NavLink>
+  )
+
+  const userMail = (
+    <div className='p-2 text-primary text-bg-accent rounded'>
+      {user}
+    </div>
+  )
+
   return (
     <>
       <Login />
@@ -21,6 +36,7 @@ const Header = () => {
         {/* Logo */}
         <NavbarBrand tag={Link} to="/">
           <Logo />
+          <h5 className='clickable d-none d-sm-inline ps-2'>Moviesearch</h5>
         </NavbarBrand>
 
 
@@ -49,11 +65,8 @@ const Header = () => {
               </NavLink>
             </NavItem>
 
-            {/* ? Here we must do something to replace it with the mail when logged in */}
             <NavItem>
-              <NavLink tag={Link} to="/Register">
-                Register
-              </NavLink>
+              {user ? userMail : register}
             </NavItem>
 
           </Nav>

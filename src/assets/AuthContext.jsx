@@ -34,6 +34,7 @@ export const AuthWrapper = ({children}) => {
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("email", email)
     setAuthenticated(true);
+    setUser(email);
   }
 
   /**
@@ -44,6 +45,8 @@ export const AuthWrapper = ({children}) => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("email");
     setAuthenticated(false);
+    setUser("");
+
   };
 
   return (

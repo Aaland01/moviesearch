@@ -18,12 +18,14 @@ const Login = () => {
 
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false)
 
   const { login } = useAuth();
 
   const handleLogin = async () => {
 
     try {
+      setLoading(true)
       const loginURL = `${API_URL}/user/login`;
       const requestOptions = {
         method:"POST", 
@@ -41,12 +43,14 @@ const Login = () => {
       } else {
         login(json.bearerToken.token, json.refreshToken.token, email);
         console.log("Logged in");
+        setLoading(false)
         toggleLogin();
         clear();
       }
 
     } catch (error) {
       console.error("Error handling login request:", error.message)
+      setLoading(false)
     }
   }
   
@@ -165,7 +169,7 @@ const Login = () => {
           
           </ModalBody>
           <ModalFooter>
-            <Button color="success" type='submit' disabled={invalidEmail}>Log in</Button>
+            <Button color="success" type='submit' disabled={invalidEmail || loading}>Log in</Button>
             <Button color="danger" onClick={cancel}>Cancel</Button>
             {/*  Cheatlogin for development   */}
             <div>
