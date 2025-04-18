@@ -10,19 +10,27 @@ ModuleRegistry.registerModules([
 ]);
 
 
-const GridTable = ({datasource, columnDefs, rowData, onRowClicked}) => {
+const GridTable = ({data, columnDefs, onRowClicked, infinite}) => {
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    theme: gridTheme,
+    onRowClicked: onRowClicked,
+    autoSizeStrategy: { type: "fitCellContents" },
+  }
+
+  if (infinite) {
+    gridOptions.rowModelType = "infinite";
+    gridOptions.datasource = data;
+  } else {
+    gridOptions.rowData = data;
+  }
+  
+
   return (
     <>
       <div className="gridwrapper text-capitalize">
-        <AgGridReact
-          rowModelType="infinite"
-          datasource={datasource}
-          autoSizeStrategy={{type: "fitCellContents"}}
-          theme={gridTheme}
-          columnDefs={columnDefs}
-          rowData={rowData}
-          onRowClicked={onRowClicked}
-        />
+        <AgGridReact {...gridOptions} />
       </div>
     </>
   )

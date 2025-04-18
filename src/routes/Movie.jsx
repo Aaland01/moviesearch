@@ -4,7 +4,7 @@ import { API_URL } from "../Moviesearch";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import GridTable from "../components/GridTable";
 import Hero from "../components/Hero";
-import { boxofficePrettyPrint } from "../assets/PrettyPrints";
+import { boxofficePrettyPrint, runtimePrettyPrint } from "../assets/PrettyPrints";
 
 const Movie = () => {
 
@@ -170,9 +170,9 @@ const Movie = () => {
             <h3>People involved</h3>
             <div className="gridwrapper text-capitalize">
               <GridTable
-                columnDefs={gridColumns}
-                rowData={involved}
-                onRowClicked={row => navigate(
+                columnDefs = {gridColumns}
+                data = {involved}
+                onRowClicked = {row => navigate(
                   `/people?id=${row.data.id}`
                 )}
               />

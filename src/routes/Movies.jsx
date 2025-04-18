@@ -1,17 +1,13 @@
 import { Col, Row } from "reactstrap";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { API_URL } from "../Moviesearch";
+import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import GridTable from "../components/GridTable";
 import SimpleYearFilter from "../components/SimpleYearFilter";
-import { ratingsPrettyPrint } from "../assets/ratingsPrint";
 import infiniteDatasource from "../assets/infiniteDatasource";
-import InfiniteTable from "../components/InfiniteTable";
 
 const Movies = () => {
 
-  const [movies, setMovies] = useState([])
   const [yearFilter, setYearFilter] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -67,9 +63,9 @@ const Movies = () => {
           <h2 className="ps-5"> {pageHeading()} </h2>
           <SearchBar />
           
-          <InfiniteTable 
-            datasource={datasource}
-            columnDefs={columns} 
+          <GridTable infinite = {true}
+            data = {datasource}
+            columnDefs = {columns} 
             onRowClicked={(row) => {
               console.log(row.data);
               navigate(`/movie?movieID=${row.data.imdbID}`

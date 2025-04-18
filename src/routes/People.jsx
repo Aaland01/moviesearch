@@ -102,7 +102,7 @@ const People = () => {
           <div className="text-start pt-3">
             <h4 className="ps-5">Movies</h4>
             <GridTable 
-              rowData={movies}
+              data={movies}
               columnDefs={columns}
               onRowClicked={row => navigate(
                 `/movie?movieid=${row.data.movieID}`

@@ -6,12 +6,10 @@ const infiniteDatasource = (URL, searchParams) => ({
   getRows: async (params) => {
     try {
       const { startRow } = params;
-      
+      const queryParams = new URLSearchParams(searchParams);
+
       const page = Math.floor(startRow / 100 ) + 1;
-      const queryParams = new URLSearchParams({
-        page,
-        ...searchParams,
-      });
+      queryParams.append("page", page);
       
       const nextMoviesURL = `${API_URL}${URL}?${queryParams}`
       // development
@@ -29,9 +27,8 @@ const infiniteDatasource = (URL, searchParams) => ({
       if (rowsThisPage.length < rowCount) {
         lastRow = startRow + rowsThisPage.length;
       } 
+
       params.successCallback(rowsThisPage, lastRow)
-      console.log("Table:", nextMoviesURL);
-      
 
     } catch (error) {
       console.error("Error fetching infinite rows:", error);
