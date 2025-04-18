@@ -1,5 +1,5 @@
 import { Button, FormGroup, Input, Form, Label, Modal, ModalBody, ModalFooter, ModalHeader, FormFeedback} from 'reactstrap'
-import { useLogin } from './LoginContext';
+import { useLogin } from '../assets/LoginContext';
 import { useState } from 'react';
 import { API_URL } from '../Moviesearch';
 
@@ -10,7 +10,7 @@ import { API_URL } from '../Moviesearch';
 const Login = () => {
 
   // Login context
-  const {showLogin, toggleLogin} = useLogin();
+  const {showLogin, toggleLogin, message} = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,7 +56,7 @@ const Login = () => {
       updateErrorfield("Email cannot exceed 30 characters", true)
     }
     else if (checkRegex(emailInput)) {
-      updateErrorfield("Email cannot contain symbols or spaces", true)
+      updateErrorfield("Invalid Email format.", true)
     }
     else {
       clearErrorfield();
@@ -71,8 +71,8 @@ const Login = () => {
   const checkRegex = (email) => {
     // Arbitrary validation only accepting letters, numbers, dots and a single @
     // Valid: abc.123@abc.com
-    let regex = /[^a-zA-Z0-9@.]+@[a-zA-Z.]+$/;  // ^ - NOT, so NOT matching a-Z, 0-9,@,.
-    return regex.test(email)
+    let regex = /[a-zA-Z0-9._]+@[a-zA-Z.-]+$/;  // ^ - NOT, so NOT matching a-Z, 0-9,@,.
+    return !regex.test(email)
   }
 
   const updateErrorfield = (string, invalid) => {
@@ -106,8 +106,8 @@ const Login = () => {
       },
       // temporary hardcoded credentials
       body: JSON.stringify({
-        email: "jamesd",
-        password: "jamesdpass"
+        email: "mike@gmail.com",
+        password: "password"
       }),
     })
     .then((res) => 
@@ -115,8 +115,9 @@ const Login = () => {
         .then((res) => {
           //!WARNING this is not industry standard or safe
           // but a simplification. Better methods later
-          localStorage.setItem("token", res.accessToken);
           console.log(res);
+          localStorage.setItem("token", res.bearerToken.token);
+          console.log(localStorage.getItem("token"))
           toggleLogin();
         })
     )
@@ -131,6 +132,9 @@ const Login = () => {
         </ModalHeader>
         <Form onSubmit={e => handleSubmit(e)}>
           <ModalBody>
+            {message && 
+              <div className='alert alert-info'>{message}</div>
+            }
             <FormGroup row>
               <Label for="email">
                 Email

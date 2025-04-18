@@ -1,14 +1,34 @@
-import { Container } from "reactstrap";
-import LogOutButton from "../components/LogOutButton";
+import { Col, Container, Row } from "reactstrap";
+import SearchBar from "../components/SearchBar";
+import Hero from "../components/Hero";
 
 const Home = () => {
   return (
     <>
-      <Container>
-        <h1> Moviesearch </h1>
+      <Hero imagesrc={"heroimage.png"} />
+
+      <Container className="text-center">
+        <h1 className="title"> Moviesearch </h1>
+        
+        <SearchBar />
+
+        <Row>
+          <Col className="col-6">
+            <h3> Movies by year </h3>
+            <div className="tempbox"> Yearbuttons here </div>
+          </Col>
+          <Col className="col-6 border-3 border-start border-accent">
+            <h3> Highlighted movie </h3>
+            <div className="tempbox"> Movie component here </div>
+          </Col>
+        </Row>
+        
+        <Row className="pt-3 border-3 border-top border-accent">
+          <h4> Some movies </h4>
+          <div className="tempbox"> Lots of movie cards here </div>
+        </Row>
+
       </Container>
-      {/* Temporary logout button */}
-      <LogOutButton />
     </>
   )
 };

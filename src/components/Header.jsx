@@ -1,9 +1,10 @@
 import { Button, Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink } from 'reactstrap'
 import { useState } from 'react'
 import Login from './Login';
-import { useLogin } from './LoginContext';
+import { useLogin } from '../assets/LoginContext';
 import { Link } from 'react-router-dom';
 import LogInButton from './LogInButton';
+import Logo from './Logo';
 
 
 const Header = () => {
@@ -17,11 +18,11 @@ const Header = () => {
     <>
       <Login />
 
-      <Navbar className='px-4' color="accent" expand="md" dark>
+      <Navbar className='px-4' color="background" expand="md" dark>
 
         {/* Logo */}
         <NavbarBrand tag={Link} to="/">
-          <img className='clickable logo' src="MovieSearchLogo.png" />
+          <Logo />
         </NavbarBrand>
 
 
