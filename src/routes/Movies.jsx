@@ -7,6 +7,7 @@ import GridTable from "../components/GridTable";
 import SimpleYearFilter from "../components/SimpleYearFilter";
 import { ratingsPrettyPrint } from "../assets/ratingsPrint";
 import infiniteDatasource from "../assets/infiniteDatasource";
+import InfiniteTable from "../components/InfiniteTable";
 
 const Movies = () => {
 
@@ -14,53 +15,20 @@ const Movies = () => {
   const [yearFilter, setYearFilter] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const moviesURL = "/movies/search"
   const [params] = useSearchParams();
   const titleParam = params.get("title")
 
   const navigate = useNavigate();
 
-  const datasource = infiniteDatasource("/movies/search",{
-    ...(titleParam ? {title: titleParam} : {}),
-    ...(yearFilter ? { year: yearFilter} : {}),
-  });
-
-  const moviesURL = () => {
-    let moviesURL = `${API_URL}/movies/search`
+  const searchParams = () => {
     const queryParams = new URLSearchParams();
     if (titleParam) queryParams.append("title",titleParam);
     if (yearFilter) queryParams.append("year",yearFilter);
-    if (queryParams.toString()) {
-      moviesURL += `?${queryParams.toString()}`
-    }
-    console.log("Crafted moviesURL: ", moviesURL)
-    return moviesURL;
+    return queryParams;
   }
 
-  const fetchMovies = async () => {
-    try {
-      const response = await fetch(moviesURL())
-      const json = await response.json()
-      const data = json.data
-      setMovies(
-        data.map( movie => {
-          return {
-            title: movie.title,
-            year: movie.year,
-            classification: movie.classification,
-            ratings: ratingsPrettyPrint(movie),
-            movieID: movie.imdbID,
-          }
-        })
-      )
-      setLoading(false)
-    } catch (error) {
-      console.error("Error retrieving data", error.message)
-    }
-  }
-
-  useEffect(() => {
-    fetchMovies()
-  }, [params, yearFilter])
+  const datasource = infiniteDatasource(moviesURL,searchParams());
 
   const pageHeading = () => {
     let heading = "Movies"
@@ -74,8 +42,10 @@ const Movies = () => {
     {headerName: "Title", field: "title"},
     {headerName: "Year", field: "year"},
     {headerName: "Classification", field: "classification"},
-    {headerName: "Ratings", field: "ratings"},
-    {headerName: "ID", field: "movieID", hide: true},
+    {headerName: "IMDB", field: "imdbRating"},
+    {headerName: "RottenTomatoes", field: "rottenTomatoesRating"},
+    {headerName: "Metacritic", field: "metacriticRating"},
+    {headerName: "ID", field: "imdbID", hide: true},
   ]
 
   const handleApply = (selectedYear) => {
@@ -97,15 +67,15 @@ const Movies = () => {
           <h2 className="ps-5"> {pageHeading()} </h2>
           <SearchBar />
           
-          <GridTable 
+          <InfiniteTable 
             datasource={datasource}
             columnDefs={columns} 
-            //rowData={movies} 
-            onRowClicked={(row) => 
-              navigate(`/movie?movieID=${row.data.movieID}`
-            )} 
+            onRowClicked={(row) => {
+              console.log(row.data);
+              navigate(`/movie?movieID=${row.data.imdbID}`
+              )} 
+            }
           />
-          
         </Col>
       </Row>
     </>
