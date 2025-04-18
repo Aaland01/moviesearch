@@ -15,7 +15,7 @@ const Footer = () => {
   return (
     <>
       <div className="footer text-bg-primary p-2">
-        <Row className="pb-5">
+        <Row className="gx-0 pb-3">
           <Col className="order-2">
             <div>
               <ul>
@@ -26,7 +26,7 @@ const Footer = () => {
             </div>
           </Col>
 
-          <Col className="text-center order-1 order-sm-3 col-12 col-sm-4">
+          <Col className="text-center order-1 order-sm-3 col-12 col-sm">
             <Button className="clickable" color="success" size="sm" onClick={scrollToTop}>
               Back to top
             </Button>
