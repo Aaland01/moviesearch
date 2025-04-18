@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, Row, Col } from "reactstrap";
 import { useAuth } from "../assets/AuthContext";
+import { API_URL } from "../Moviesearch";
 
 const Logout = () => {
 
@@ -9,12 +10,30 @@ const Logout = () => {
 
   const { logout } = useAuth();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // some call to API 
-    // + removing tokens from localstorage
-    console.log("[LOGOUT] --- Logging out")
-    logout();
-    toggleLogout();
+    try {
+      const logoutURL = `${API_URL}/user/logout`
+      const refreshToken = localStorage.getItem("refreshToken")
+      const requestOptions = {
+        method:"POST", 
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          refreshToken: refreshToken
+        })
+      }
+      const response = await fetch(logoutURL,requestOptions)
+      const json = await response.json()
+      
+      if (json.error) console.error("Response error:", json.message)
+      
+      // + removing tokens from localstorage
+      logout();
+      console.log("Logged out")
+      toggleLogout();
+    } catch (error) {
+      console.error("Error handling logout:", error.message)
+    }
   }
 
   const [showLogout, setShowLogout] = useState(true);

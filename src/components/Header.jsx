@@ -1,7 +1,6 @@
-import { Button, Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink } from 'reactstrap'
+import { Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink } from 'reactstrap'
 import { useState } from 'react'
 import Login from './Login';
-import { useLogin } from '../assets/LoginContext';
 import { Link } from 'react-router-dom';
 import LogInButton from './LogInButton';
 import Logo from './Logo';
@@ -10,7 +9,6 @@ import Logo from './Logo';
 const Header = () => {
 
   const [collapse, setCollapse] = useState(false)
-  const {toggleLogin} = useLogin()
 
   const toggleNav = () => setCollapse(!collapse)
 

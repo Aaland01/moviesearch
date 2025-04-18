@@ -23,26 +23,27 @@ const Login = () => {
 
   const handleLogin = async () => {
 
-    const loginURL = `${API_URL}/user/login`;
-    const requestOptions = {
-      method:"POST", 
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        email: email,
-        password: password
-      }),
-    }
-
     try {
+      const loginURL = `${API_URL}/user/login`;
+      const requestOptions = {
+        method:"POST", 
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          email: email,
+          password: password
+        }),
+      }
       const response = await fetch(loginURL, requestOptions)
       const json = await response.json()
-      if (json.error) updateErrorfield(json.message, true);
-      else {
-        login(json.bearerToken.token, json.refreshToken.token);
-        toggleLogin;
-        setMessage("");
+      if (json.error) {
+        console.error("Login error:", json.message)
+        setMessage(json.message)
+      } else {
+        login(json.bearerToken.token, json.refreshToken.token, email);
+        console.log("Logged in");
+        toggleLogin();
+        clear();
       }
-      console.log(json);
 
     } catch (error) {
       console.error("Error handling login request:", error.message)
@@ -85,18 +86,22 @@ const Login = () => {
     setInvalidEmail(false);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!invalidEmail){
       handleLogin();  
     }
   }
 
-  const cancel = () => {
+  const clear = () => {
     setEmail("");
     setPassword("");
-    toggleLogin;
     setMessage("");
+  }
+
+  const cancel = () => {
+    toggleLogin();
+    clear();
   }
 
   /**
