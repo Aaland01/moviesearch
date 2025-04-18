@@ -26,8 +26,6 @@ function Moviesearch() {
               <main className="flex-grow-1">
                 <Routes>
                   <Route path='/' element={<Home />}/>
-                  {/* TEMPORARY LOGOUT, want it to be global modal */}
-                  <Route path='/logout' element={<Logout />} />
                   <Route path='/movies' element={<Movies />} />
                   <Route path='/movie' element={<Movie />} />
                   <Route path='/people' element={<People />} />
