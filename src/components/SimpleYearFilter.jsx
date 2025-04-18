@@ -3,11 +3,12 @@ import { Button } from "reactstrap";
 
 const SimpleYearFilter = ({ onApply }) => {
 
-  const currentYear = 2025;
+  // Hardcoded but can easily be made dynamic
+  const lastYear = 2023;
   const startYear = 1990;
 
   const years = Array.from(
-    { length: currentYear - startYear + 1 }, 
+    { length: lastYear - startYear + 1 }, 
     (_, i) => startYear + i
   );
 
@@ -16,6 +17,7 @@ const SimpleYearFilter = ({ onApply }) => {
 
   const clear = () => {
     selectYear(0);
+    applyFilter(0);
   }
 
   const handleYearSet = (year) => {
@@ -23,8 +25,9 @@ const SimpleYearFilter = ({ onApply }) => {
     selectYear(year);
   }
 
-  const applyFilter = () => {
-    onApply(selectedYear);
+  const applyFilter = (year) => {
+    if (year === 0) onApply(0);
+    else onApply(selectedYear)
   }
 
   return (
