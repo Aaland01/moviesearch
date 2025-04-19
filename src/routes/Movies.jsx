@@ -67,7 +67,6 @@ const Movies = () => {
             data = {datasource}
             columnDefs = {columns} 
             onRowClicked={(row) => {
-              console.log(row.data);
               navigate(`/movie?movieID=${row.data.imdbID}`
               )} 
             }

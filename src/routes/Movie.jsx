@@ -23,7 +23,6 @@ const Movie = () => {
     try {
       const response = await fetch(movieURL)
       const json = await response.json()
-      console.log(json);
       const poster = await handlePoster(json.poster);
       setMovie(
         {
