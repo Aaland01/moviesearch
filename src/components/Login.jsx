@@ -20,7 +20,7 @@ const Login = () => {
     <>
       <Modal isOpen={showLogin} toggle={toggleLogin}>
         <ModalHeader toggle={toggleLogin}>
-          Login
+          {isAuthenticated ? "Log out" : "Log in"}
         </ModalHeader>
         {message && 
             <div className='alert alert-secondary m-3 mb-0'>{message}</div>
