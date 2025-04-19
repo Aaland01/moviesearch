@@ -49,8 +49,47 @@ export const AuthWrapper = ({children}) => {
 
   };
 
+  /**
+   * Will see if there is a refreshtoken stored, and then attempt to use it to refresh bearertoken
+   * @returns true if re-authenticated, false otherwise
+   */
+  const attemptRefresh = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken")
+      const refreshURL = `${API_URL}/user/refresh`
+      const requestOptions = {
+        method:"POST", 
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          refreshToken: refreshToken
+        })
+      }
+      console.log(refreshToken);
+      if ( refreshToken ) {
+        const response = await fetch(refreshURL,requestOptions)
+        const json = await response.json()
+        console.log("Response:",json);
+        if (json.error) {
+          throw new Error(json.message)
+        }
+        const newBearer = json.bearerToken.token;
+        const newRefresh = json.refreshToken.token;
+        const email = localStorage.getItem("email")
+        login(newBearer, newRefresh, email)
+        setLoading(false)
+        return true;
+      } else {
+        console.warn("Else triggered, refreshToken is null");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error retrieving refreshtoken:", error.message)
+      return false;
+    }    
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setAuthenticated, login, logout, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, setAuthenticated, login, logout, attemptRefresh, user }}>
       {!isloading && children}  
     </AuthContext.Provider>
   )
