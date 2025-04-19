@@ -1,6 +1,5 @@
 import { Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink, NavbarText } from 'reactstrap'
 import { useState } from 'react'
-import Login from './Login';
 import { useAuth } from '../assets/AuthContext';
 import { Link } from 'react-router-dom';
 import LogInButton from './LogInButton';
@@ -29,8 +28,6 @@ const Header = () => {
 
   return (
     <>
-      <Login />
-
       <Navbar className='px-4' color="background" expand="md" dark>
 
         {/* Logo */}
