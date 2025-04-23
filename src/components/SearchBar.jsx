@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Row } from "reactstrap";
-import { API_URL } from "../Moviesearch";
-
 
 const SearchBar = () => {
 
@@ -15,7 +13,6 @@ const SearchBar = () => {
       return;
     }
     let url = `/movies?title=${search}`
-    console.log(`Navigating to: | ${url} |`);
     navigate(url)
   }
 

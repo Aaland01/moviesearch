@@ -39,7 +39,6 @@ const Movie = () => {
       setGenres(json.genres);
       setRatings(json.ratings)
       setLoading(false);
-      console.log("Gridtable dataset:", json.principals)
       setInvolved(json.principals);
     } catch (error) {
       console.error("Error fetching movie data", error.message)

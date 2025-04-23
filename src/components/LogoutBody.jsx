@@ -37,7 +37,6 @@ const LogoutBody = () => {
       // + removing tokens from localstorage
       
       logout();
-      console.log("Logged out")
       setTimeout(() => {
         setLoading(false);
         setMessage("");

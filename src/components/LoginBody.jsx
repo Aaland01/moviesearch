@@ -40,7 +40,6 @@ const LoginBody = () => {
         setMessage(json.message)
       } else {
         login(json.bearerToken.token, json.refreshToken.token, email);
-        console.log("Logged in");
         setLoading(false)
         toggleLogin();
         clear();
