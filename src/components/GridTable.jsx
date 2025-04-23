@@ -1,12 +1,14 @@
 import { AgGridReact } from "ag-grid-react";
 import { gridTheme } from "../assets/aggridtheme";
-import { ModuleRegistry, ClientSideRowModelModule, ValidationModule, ColumnAutoSizeModule, InfiniteRowModelModule } from 'ag-grid-community'
+import { ModuleRegistry, ClientSideRowModelModule, ValidationModule, 
+  ColumnAutoSizeModule, InfiniteRowModelModule, CellStyleModule } from 'ag-grid-community'
 
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   ValidationModule,
   ColumnAutoSizeModule,
   InfiniteRowModelModule,
+  CellStyleModule,
 ]);
 
 

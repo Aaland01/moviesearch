@@ -14,6 +14,7 @@ const Movie = () => {
   const [ratings, setRatings] = useState([])
 
   const [loading, setLoading] = useState(true)
+  const [posterCaption, setPosterCaption] = useState("")
   const navigate = useNavigate();
 
   const [params] = useSearchParams();
@@ -23,7 +24,7 @@ const Movie = () => {
     try {
       const response = await fetch(movieURL)
       const json = await response.json()
-      const poster = await handlePoster(json.poster);
+      //const poster = await handlePoster(json.poster);
       setMovie(
         {
           title: json.title,
@@ -32,12 +33,13 @@ const Movie = () => {
           runtime: json.runtime,
           boxoffice: json.boxoffice,
           plot: json.plot,
-          poster: poster,
+          poster: json.poster,
         }
       )
       setGenres(json.genres);
       setRatings(json.ratings)
       setLoading(false);
+      console.log("Gridtable dataset:", json.principals)
       setInvolved(json.principals);
     } catch (error) {
       console.error("Error fetching movie data", error.message)
@@ -48,29 +50,10 @@ const Movie = () => {
     fetchMovieData();
   }, []);
 
-  const handlePoster = async (posterSRC) => {
-    try {
-      const res = await fetch(
-        posterSRC, { 
-          method: "HEAD"}
-      );
-      if (res.ok) {
-        console.log(`Source ok: ${posterSRC}`);
-        return posterSRC;
-      } else {
-        console.warn(`Poster unavailable: ${posterSRC}`);
-        return null
-      }
-    } catch (error) {
-      console.error("Error checking poster: ", error.message );
-      return null
-    }
-  }
-
   const posterSrc = () => {
     if (loading) {
       return (
-        "logo.png"
+        "MovieSearchLogo.png"
       )
     }
     if (movie.poster) {
@@ -78,8 +61,9 @@ const Movie = () => {
         movie.poster
       )
     } else {
+      setPosterCaption("Poster not found")
       return (
-        "logo.png"
+        "MovieSearchLogo.png"
       )
     }
   }
@@ -87,7 +71,8 @@ const Movie = () => {
   const gridColumns = [
     {headerName: "Role", field: "category"},
     {headerName: "Name", field: "name"},
-    {headerName: "Character", field: "characters"},
+    {headerName: "Character", field: "characters", cellDataType:"object", 
+      valueFormatter: characters => characters[0]},
     {headerName: "Id", field: "id", hide: true},
   ]
 
@@ -99,9 +84,14 @@ const Movie = () => {
         <Row className="justify-content-start">
           <Col className="text-center col-12 col-sm-auto">
             <div className="posterwrapper">
-              <img className="poster" src={posterSrc()} alt={`Poster for ${movie.title}`}/>
+              <img 
+                className="poster" 
+                src={posterSrc()} 
+                alt={`Poster for "${movie.title}"`}
+                onError={(e) => { e.target.onerror = null; setPosterCaption("No poster found"); e.target.src = 'MovieSearchLogo.png'; }}
+              />
             </div>
-            <p className="caption"> Small poster caption </p>
+            <p className="caption">{posterCaption}</p>
           </Col>
           <Col className="col-12 col-sm-7 col-xl-8">
             <h1>{movie.title}</h1>

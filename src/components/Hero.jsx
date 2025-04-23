@@ -6,7 +6,13 @@ const Hero = ({imagesrc}) => {
   return (
     <>
         <div className="herowrapper">
-            <img src={imagesrc} className="img-fluid" alt={alt} />
+            <img 
+              src={imagesrc} 
+              className="img-fluid" 
+              onError={e => {
+                e.target.onError=null;e.target.className="d-none"
+              }}
+              alt={alt} />
         </div>
 
     </>
