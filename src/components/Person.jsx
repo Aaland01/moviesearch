@@ -16,7 +16,8 @@ const Person = ({name, birthYear, deathYear, movies}) => {
   const columns = [
     {headerName: "Role", field: "category"},
     {headerName: "Movie", field: "movieName"},
-    {headerName: "Characters", field: "characters"},
+    {headerName: "Characters", field: "characters", 
+      valueFormatter: characters => characters[0]},
     {headerName: "IMDBrating", field: "imdbRating"},
     {headerName: "ID", field: "movieID", hide: true},
   ]
