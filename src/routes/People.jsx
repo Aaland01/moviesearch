@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { API_URL } from "../Moviesearch";
 import { useSearchParams } from "react-router-dom";
 import Person from "../components/Person";
 import { useAuth } from "../assets/AuthContext";
 import { useLogin } from "../assets/LoginContext";
+import LogInButton from "../components/LogInButton";
+import { Container } from "reactstrap";
 
 const People = () => {
 
@@ -15,19 +17,21 @@ const People = () => {
   const [personDetails, setPerson] = useState({})
   const [movies, setMovies] = useState([])
   const [loading, setLoading] = useState(false)
+  const [refetchTrigger, setTrigger] = useState(0)
 
-  const {isAuthenticated,logout} = useAuth();
+  const {isAuthenticated, logout, attemptRefresh} = useAuth();
   const {toggleLogin, setMessage} = useLogin();
 
-/*   useEffect(() => {
-    if(isAuthenticated){
-      getPersonDetails();
-    } 
-  }, [isAuthenticated]) */
+  const hasFetched = useRef(false)
+
 
   useEffect(() => {
     let isMounted = true;
+
     const getPersonDetails = async () => {
+      if (!isMounted || hasFetched.current || !isAuthenticated) return;
+      hasFetched.current = true;
+
       try {
         setLoading(true)
         console.log(`Fetching from: \n -> ${personURL}` )
@@ -40,15 +44,34 @@ const People = () => {
         });
         const json = await response.json();
         if ( response.status === 401 ) {
-          if (isMounted) handle401(json.message);
+          if (json.message.includes("expired")) {
+            console.log("JWT Token expired, attempting refresh:");
+            const refreshAttempt = await attemptRefresh();
+            if (refreshAttempt){
+              hasFetched.current = false;
+              setTrigger(prev => prev + 1)
+              setLoading(false);
+              return;
+            } else {
+              console.log("Refresh failed");
+              logout();
+              setMessage("Session expired. Please log in")
+              setLoading(false);
+              return;
+            }
+          } else {
+            console.log("Non-expired 401: ", json.message);
+            setMessage("You need an account to access this content. Please log in or register")
+            setLoading(false);
+            return;
+          }
         } else if (response.ok){
-          console.log("Ok, setting data");
-          if (isMounted) setData(json);
+          setData(json);
         } else {
           throw new Error(json.message);
         }
       } catch (error) {
-        if (isMounted) console.error("Error retrieving data", error.message)
+        console.error("Error retrieving person:", error.message)
       }
     }
 
@@ -57,9 +80,7 @@ const People = () => {
     return () => {
       isMounted = false;
     }
-  }, [isAuthenticated])
-
-  
+  }, [isAuthenticated, logout, attemptRefresh, refetchTrigger])
 
   const setData = (json) => {
     setPerson({
@@ -72,38 +93,22 @@ const People = () => {
     console.log("Data set for ", json.name);
   }
 
-  const handle401 = (errorMessage) => {
-    console.log("Handling 401: ", errorMessage);
-    
-    if (errorMessage.includes("expired")) {
-      if (!attemptRefresh()){
-        console.log("Refresh failed");
-        logout();
-        setMessage("Session expired. Please log in")
-        toggleLogin();
-        setLoading(false)
-      } else {
-        console.log("Refreshed user");
-      }
-    } else {
-      setMessage("You need an account to access this content. Please log in or register")
-      toggleLogin();
-      setLoading(false)
-    }
-  }
-
   return (
     <>
         <h3 className="text-center">Moviesearch - Person highlight</h3>
+        <h4 className={`loadingbar bg-accent p-2 text-center ${loading ? "d-block" : "d-none"}`}>Loading ...</h4>
         {
           !isAuthenticated ? (
-            <h3 className="text-center">You need an account to access this content. Please log in</h3>
+            <Container className="text-center p-3 ">
+              <h3 className="p-2">You need an account to access this content.</h3>
+              <h4 className="p-2"> Please log in </h4>
+              <LogInButton className="btn-lg"/>
+            </Container>
           ) :
           (
             <Person {...personDetails} movies = {movies} />
           )
         }
-        <h4 className={loading ? "d-block" : "d-none"}>Loading ...</h4>
 
     </>
   )

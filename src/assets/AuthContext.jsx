@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { API_URL } from "../Moviesearch";
 
 const AuthContext = createContext();
 
@@ -30,6 +31,7 @@ export const AuthWrapper = ({children}) => {
    * Stores (DANGEROUS) tokens in localstorage and updates authenticated context
    */
   const login = (bearerToken, refreshToken, email) => {
+    console.log("[AUTH] LOGIN - Setting new tokens");
     localStorage.setItem("bearerToken", bearerToken);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("email", email)
@@ -41,6 +43,7 @@ export const AuthWrapper = ({children}) => {
    * Removes tokens from local storage and updates authenticated context
    */
   const logout = () => {
+    console.log("[AUTH] LOGOUT - Clearing tokens");
     localStorage.removeItem("bearerToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("email");
@@ -64,11 +67,9 @@ export const AuthWrapper = ({children}) => {
           refreshToken: refreshToken
         })
       }
-      console.log(refreshToken);
       if ( refreshToken ) {
         const response = await fetch(refreshURL,requestOptions)
         const json = await response.json()
-        console.log("Response:",json);
         if (json.error) {
           throw new Error(json.message)
         }
@@ -76,17 +77,19 @@ export const AuthWrapper = ({children}) => {
         const newRefresh = json.refreshToken.token;
         const email = localStorage.getItem("email")
         login(newBearer, newRefresh, email)
-        setLoading(false)
         return true;
       } else {
         console.warn("Else triggered, refreshToken is null");
         return false;
       }
     } catch (error) {
-      console.error("Error retrieving refreshtoken:", error.message)
+      console.error("Attemptrefresh failed:", error.message)
       return false;
     }    
   }
+
+  // Outdated bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2VAZ21haWwuY29tIiwiZXhwIjoxNzQ1Mzg2ODQ2LCJpYXQiOjE3NDUzODYyNDZ9.TrrjMBRJ2Xlrk2_iCuVarOGyecVL3HzRXINksUbkG8w
+  // 
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, setAuthenticated, login, logout, attemptRefresh, user }}>
