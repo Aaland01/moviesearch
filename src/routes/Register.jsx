@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../assets/AuthContext';
 import { useLogin } from '../assets/LoginContext';
 import { Button, Col, Container, Form, FormFeedback, FormGroup, Input, Label, Row } from 'reactstrap';
+import { API_URL } from '../Moviesearch';
 
 const Register = () => {
   
-  const { setMessage } = useLogin();
+  const { setMessage, toggleLogin } = useLogin();
+  const { isAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +17,8 @@ const Register = () => {
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
+
+  const [happyMessage, setHappyMessage] = useState("");
 
   const [loading, setLoading] = useState(false)
 
@@ -45,15 +49,19 @@ const Register = () => {
       if (json.error) {
         if (json.message.includes("already exists")) {
           console.log("User already exists");
-          setErrorMessage("A user with this email already exists.")
+          updateErrorfield("A user with this email already exists.")
+          setLoading(false)
+          return;
         } else {
           console.error("Error not regarding duplicate user:", json.message)
+          setLoading(false)
         }
       } else {
-        setErrorMessage("User succesfully created")
+        setHappyMessage("User succesfully created!")
+        setMessage("User succesfully created. Please log in")
         clear();
+        if (!isAuthenticated) toggleLogin();
       }
-
     } catch (error) {
       console.error("Error during registration:", error.message)
     }
@@ -157,10 +165,9 @@ const Register = () => {
 
   const clear = () => {
     console.log("Clearing...");
-    
     setEmail("");
     setPassword("");
-    setMessage("");
+    setPasswordConfirm("");
     clearPasswordError();
     clearErrorfield();
   }
@@ -173,6 +180,12 @@ const Register = () => {
         <Row className='justify-content-center pb-5'>
           <Col className='col-auto col-md-7 col-lg-6 bg-accent p-5 rounded'>
             <h1 className='pb-3'>Register user</h1>
+            {happyMessage && (
+                    <p className='text-success'>
+                      {happyMessage}
+                    </p>
+                  )}
+            {isAuthenticated && (<p>You're already authenticated, but you may register another user.</p>)}
             <Form onSubmit={e => handleSubmit(e)}>
               <div className='pb-2 border-bottom border-2 border-background'>
                 <FormGroup className='pt-2 border-top border-2 border-background' row>
@@ -190,13 +203,9 @@ const Register = () => {
                     }}
                     invalid={invalidEmail}
                   />
-                {
-                  (
-                    <FormFeedback valid={!invalidEmail}>
-                      {errorMessage}
-                    </FormFeedback>
-                  )
-                }
+                  <FormFeedback valid={!invalidEmail}>
+                    {errorMessage}
+                  </FormFeedback>
                 </FormGroup>
 
                 <FormGroup className='pt-2 border-top border-2 border-background' row>
@@ -232,6 +241,11 @@ const Register = () => {
               </div>
               <div className='pt-3'>
                 <Button color="success" type='submit' disabled={invalidEmail || invalidPassword || loading}>Register</Button>
+              </div>
+              <div className='pt-3'>
+                <Button color="success" onClick={() => setHappyMessage("Yay")}>
+                  Tester
+                </Button>
               </div>
             </Form>
           </Col>
