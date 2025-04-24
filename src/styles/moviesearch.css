@@ -100,3 +100,7 @@ img.poster {
   left: 40vw;
   z-index: 1005;
 }
+
+.footerlist {
+  list-style-type: none;
+}
