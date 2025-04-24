@@ -35,7 +35,24 @@ const Footer = () => {
             <Link to={"/"}>
               <Logo />
             </Link>
-
+            {/* DEV */}
+            <div>
+              <Button className="clickable" color="info" size="sm" 
+                onClick={e => {
+                  console.log("Bearer:",localStorage.getItem("bearerToken"));
+                  console.log("Refresh:",localStorage.getItem("refreshToken"));
+                  
+              }}>
+                Print my tokens!
+              </Button>
+              <Button className="clickable" color="info" size="sm" 
+                onClick={e => {
+                  localStorage.setItem("bearerToken","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2VAZ21haWwuY29tIiwiZXhwIjoxNzQ1Mzg2ODQ2LCJpYXQiOjE3NDUzODYyNDZ9.TrrjMBRJ2Xlrk2_iCuVarOGyecVL3HzRXINksUbkG8w")
+                  console.log("Expired Bearer:", localStorage.getItem("bearerToken"))
+              }}>
+                Expire Bearer
+              </Button>
+            </div>
           </Col>
         </Row>
 
