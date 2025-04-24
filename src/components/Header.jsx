@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink, NavbarText } from 'reactstrap'
+import { Navbar, NavbarBrand, Collapse, NavbarToggler, NavItem, Nav, NavLink } from 'reactstrap'
 import { useState } from 'react'
 import { useAuth } from '../assets/AuthContext';
 import { Link } from 'react-router-dom';
@@ -47,18 +47,8 @@ const Header = () => {
 
           <Nav className='ms-auto gap-md-4' navbar>
             <NavItem>
-              <NavLink href='https://github.com/Aaland01' target='_blank'>
-                Github
-              </NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink tag={Link} to="/movies">
                 Movies
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={Link} to="/people">
-                People
               </NavLink>
             </NavItem>
 
