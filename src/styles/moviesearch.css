@@ -52,9 +52,24 @@ img.poster {
   }
 }
 
+
+.people {
+  max-width: 65vw;
+}
+
+@media screen and (max-width: 768px) {
+  .people {
+    max-width: 95vw;
+  }
+}
+
 .gridwrapper {
   width: 90%;
   height: 100vh;
+}
+
+.chartwrapper {
+  justify-items: center;
 }
 
 .ag-cell {
@@ -71,10 +86,6 @@ img.poster {
 .footerbadge{
   height: 2vw;
   width: 2vw;
-}
-
-.people {
-  max-width: 65vw;
 }
 
 .year-display {
