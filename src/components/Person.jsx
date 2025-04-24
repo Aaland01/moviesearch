@@ -20,7 +20,7 @@ const Person = ({name, birthYear, deathYear, movies}) => {
     {headerName: "Characters", field: "characters", 
       valueFormatter: characters => characters[0]},
     {headerName: "IMDBrating", field: "imdbRating"},
-    {headerName: "ID", field: "movieID", hide: true},
+    {headerName: "ID", field: "movieId", hide: true},
   ]
 
   return (
@@ -37,9 +37,9 @@ const Person = ({name, birthYear, deathYear, movies}) => {
             <GridTable 
               data={movies}
               columnDefs={columns}
-              onRowClicked={row => navigate(
-                `/movie?movieid=${row.data.movieID}`
-              )}
+              onRowClicked={row => 
+                navigate(`/movie?movieID=${row.data.movieId}`)
+              }
             />
           </div>
           <div className="py-5">
