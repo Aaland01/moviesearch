@@ -229,12 +229,7 @@ const Register = () => {
                 </FormGroup>
               </div>
               <div className='pt-3'>
-                <Button color="success" type='submit' disabled={invalidEmail || invalidPassword || loading}>Register</Button>
-              </div>
-              <div className='pt-3'>
-                <Button color="success" onClick={() => setHappyMessage("Yay")}>
-                  Tester
-                </Button>
+                <Button className='clickable' color="success" type='submit' disabled={invalidEmail || invalidPassword || loading}>Register</Button>
               </div>
             </Form>
           </Col>
