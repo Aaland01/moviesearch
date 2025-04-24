@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { API_URL } from "../Moviesearch";
 
 const AuthContext = createContext();
@@ -12,16 +12,36 @@ export const AuthWrapper = ({children}) => {
   // For displaying email
   const [user, setUser] = useState("")
 
+  const hasCheckedForTokens = useRef(false);
+
   useEffect(() => {
-    const bearerToken = localStorage.getItem("bearerToken");
-    // THEN CHECK FOR REFRESH
-    if (bearerToken) {
-      setAuthenticated(true);
-      setUser(localStorage.getItem("email"))
-    } else {
-      console.log("No Token found - Not authenticated")
+
+    const tokensCheck = async () => {
+      if (hasCheckedForTokens.current) return;
+      hasCheckedForTokens.current = true;
+
+      const storedBearerToken = localStorage.getItem("bearerToken");
+      const storedRefreshToken = localStorage.getItem("refreshToken");
+      
+      if (storedBearerToken && storedRefreshToken) {
+        console.log("Bearer token found");
+        setUser(localStorage.getItem("email"))
+        const refreshSuccess = await attemptRefresh();
+        if (!refreshSuccess) {
+          console.log("Initial refresh failed");
+          logout();
+        } else {
+          console.log("User refreshed");
+        }
+        
+      } else {
+        console.log("Missing tokens - Not authenticated")
+        logout();
+      }
+      setLoading(false);
     }
-    setLoading(false);
+    
+    tokensCheck();
   }, []);
 
   /**
@@ -49,7 +69,6 @@ export const AuthWrapper = ({children}) => {
     localStorage.removeItem("email");
     setAuthenticated(false);
     setUser("");
-
   };
 
   /**
