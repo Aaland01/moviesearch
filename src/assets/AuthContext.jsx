@@ -88,9 +88,6 @@ export const AuthWrapper = ({children}) => {
     }    
   }
 
-  // Outdated bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pa2VAZ21haWwuY29tIiwiZXhwIjoxNzQ1Mzg2ODQ2LCJpYXQiOjE3NDUzODYyNDZ9.TrrjMBRJ2Xlrk2_iCuVarOGyecVL3HzRXINksUbkG8w
-  // 
-
   return (
     <AuthContext.Provider value={{ isAuthenticated, setAuthenticated, login, logout, attemptRefresh, user }}>
       {!isloading && children}  

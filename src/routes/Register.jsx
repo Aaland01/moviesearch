@@ -25,7 +25,6 @@ const Register = () => {
   const handleRegister = async () => {
     try {
       if (!email || !password) {
-        console.warn("Missing email or password");
         updateErrorfield("All details need to be filled in")
         return;
       }
@@ -45,10 +44,8 @@ const Register = () => {
       }
       const response = await fetch(registerURL, requestOptions)
       const json = await response.json()
-      console.log(json);
       if (json.error) {
         if (json.message.includes("already exists")) {
-          console.log("User already exists");
           updateErrorfield("A user with this email already exists.")
           setLoading(false)
           return;
@@ -106,12 +103,9 @@ const Register = () => {
   const handlePasswordChange = (passwordValue) => {
     if (checkPassLength(passwordValue)) {
       updatePasswordError("Password has to be between 6 and 20 characters long")
-      console.error("Password size mismatch", invalidPassword)
     } if (checkStrength(passwordValue)) {
       updatePasswordError("Password needs to have at least 1 of each: Upper case, lower case, number")
-      console.error("Password too weak", passwordMessage)
     } else {
-      console.warn("No errors")
       clearPasswordError()
     }
     setPassword(passwordValue)
@@ -139,10 +133,6 @@ const Register = () => {
 
   const comparePasswords = (pass1, pass2) => {
     const comparison = pass1.localeCompare(pass2);
-    console.log("Comparing: ");
-    console.log("Pass: ", pass1);
-    console.log("Conf: ", pass2);
-    console.log(comparison);
     return comparison === 0;
   }
 
@@ -164,7 +154,6 @@ const Register = () => {
   }
 
   const clear = () => {
-    console.log("Clearing...");
     setEmail("");
     setPassword("");
     setPasswordConfirm("");

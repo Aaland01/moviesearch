@@ -35,7 +35,6 @@ const LoginBody = () => {
       const response = await fetch(loginURL, requestOptions)
       const json = await response.json()
       if (json.error) {
-        console.error("Login error:", json.message)
         setMessage(json.message)
         setInvalidLogin(true);
         setLoading(false)

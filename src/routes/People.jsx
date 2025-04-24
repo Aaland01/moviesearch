@@ -34,7 +34,6 @@ const People = () => {
 
       try {
         setLoading(true)
-        console.log(`Fetching from: \n -> ${personURL}` )
         const response = await fetch(personURL, {
           method: "GET",
           headers: {
@@ -90,7 +89,6 @@ const People = () => {
     });
     setMovies(json.roles);
     setLoading(false);
-    console.log("Data set for ", json.name);
   }
 
   return (
