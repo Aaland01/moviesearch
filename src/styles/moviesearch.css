@@ -104,3 +104,8 @@ img.poster {
 .footerlist {
   list-style-type: none;
 }
+
+.genre {
+  background-color: none !important;
+  color: white;
+}

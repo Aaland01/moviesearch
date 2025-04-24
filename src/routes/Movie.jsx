@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import GridTable from "../components/GridTable";
 import Hero from "../components/Hero";
 import { boxofficePrettyPrint, runtimePrettyPrint } from "../assets/PrettyPrints";
+import GenreBadges from "../components/GenreBadges";
 
 const Movie = () => {
 
@@ -105,13 +106,7 @@ const Movie = () => {
               {runtimePrettyPrint(movie.runtime)}
             </div>
             <div className="genres mt-3">
-              {
-                genres.map(genre => (
-                  <Badge key={genre} color="primary" className={`genre ${genre} px-2 me-2`}>
-                    {genre}
-                  </Badge>
-                ))
-              }
+              <GenreBadges genres={genres} />
             </div>
             <div className="buttonwrapper mt-3 m-md-1 text-start text-md-end">
               <Button 
