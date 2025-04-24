@@ -1,4 +1,4 @@
-import { Button, FormGroup, Input, Form, Label, ModalBody, ModalFooter, FormFeedback} from 'reactstrap'
+import { Button, FormGroup, Input, Form, Label, ModalBody, ModalFooter} from 'reactstrap'
 import { useLogin } from '../assets/LoginContext';
 import { useState } from 'react';
 import { API_URL } from '../Moviesearch';
@@ -17,8 +17,7 @@ const LoginBody = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [invalidEmail, setInvalidEmail] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [invalidLogin, setInvalidLogin] = useState(false);
 
   const handleLogin = async () => {
 
@@ -38,10 +37,12 @@ const LoginBody = () => {
       if (json.error) {
         console.error("Login error:", json.message)
         setMessage(json.message)
+        setInvalidLogin(true);
+        setLoading(false)
       } else {
         login(json.bearerToken.token, json.refreshToken.token, email);
-        setLoading(false)
         toggleLogin();
+        setLoading(false)
         clear();
       }
 
@@ -51,45 +52,19 @@ const LoginBody = () => {
     }
   }
   
-  const handleEmailChange = (e) => {
-    const { value: emailInput } = e.target;
-
-    if (checkLength(emailInput)){
-      updateErrorfield("Email cannot exceed 30 characters", true)
-    }
-    else if (checkRegex(emailInput)) {
-      updateErrorfield("Invalid Email format.", true)
-    }
-    else {
-      clearErrorfield();
-    }
-    setEmail(emailInput)
+  const handleEmailChange = (newMail) => {
+    setEmail(newMail)
+    if (invalidLogin) setInvalidLogin(false)
   }
 
-  const checkLength = (email) => {
-    return email.length >= 31;
-  }
-
-  const checkRegex = (email) => {
-    // Arbitrary validation only accepting letters, numbers, dots and a single @
-    // Valid: abc.123@abc.com
-    let regex = /[a-zA-Z0-9._]+@[a-zA-Z.-]+$/;  // ^ - NOT, so NOT matching a-Z, 0-9,@,.
-    return !regex.test(email)
-  }
-
-  const updateErrorfield = (string, invalid) => {
-    setErrorMessage(string);
-    setInvalidEmail(invalid);
-  } 
-
-  const clearErrorfield = () => {
-    setErrorMessage("");
-    setInvalidEmail(false);
+  const handlePasswordChange = (newPass) => {
+    setPassword(newPass)
+    if (invalidLogin) setInvalidLogin(false)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!invalidEmail){
+    if (!invalidLogin){
       handleLogin();  
     }
   }
@@ -98,6 +73,7 @@ const LoginBody = () => {
     setEmail("");
     setPassword("");
     setMessage("");
+    setInvalidLogin(false)
   }
 
   const cancel = () => {
@@ -129,18 +105,10 @@ const LoginBody = () => {
               placeholder=""
               type="email"
               value={email}
-              onChange={ e => {
-                handleEmailChange(e)
-              }}
-              invalid={invalidEmail}
+              onChange={ e => {handleEmailChange(e.target.value)}}
+              invalid={invalidLogin}
+              maxLength={40}
             />
-          {
-            (
-              <FormFeedback valid={!invalidEmail}>
-                {errorMessage}
-              </FormFeedback>
-            )
-          }
           </FormGroup>
           <FormGroup row>
             <Label for="password">
@@ -152,14 +120,15 @@ const LoginBody = () => {
               placeholder=""
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
-              invalid={invalidEmail}
+              onChange={e => handlePasswordChange(e.target.value)}
+              invalid={invalidLogin}
+              maxLength={40}
             />
           </FormGroup>
         
         </ModalBody>
         <ModalFooter>
-          <Button color="success" type='submit' disabled={invalidEmail || loading}>Log in</Button>
+          <Button color="success" type='submit' disabled={invalidLogin || loading}>Log in</Button>
           <Button color="danger" onClick={cancel}>Cancel</Button>
           {/*  Cheatlogin for development   */}
           <div>
