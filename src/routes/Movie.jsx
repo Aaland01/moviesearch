@@ -18,10 +18,14 @@ const Movie = () => {
   const navigate = useNavigate();
 
   const [params] = useSearchParams();
-  const movieURL = `${API_URL}/movies/data/${params.get("movieID")}`
+  const movieID = params.get("movieID");
+  const movieURL = `${API_URL}/movies/data/${movieID}`
 
   const fetchMovieData = async () => {
     try {
+      if (movieID === null) {
+        navigate("/notfound")
+      }
       const response = await fetch(movieURL)
       const json = await response.json()
       //const poster = await handlePoster(json.poster);

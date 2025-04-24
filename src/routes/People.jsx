@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { API_URL } from "../Moviesearch";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../components/Person";
 import { useAuth } from "../assets/AuthContext";
 import { useLogin } from "../assets/LoginContext";
@@ -8,9 +8,6 @@ import LogInButton from "../components/LogInButton";
 import { Container } from "reactstrap";
 
 const People = () => {
-
-  const [params] = useSearchParams();
-  const personURL = `${API_URL}/people/${params.get("id")}`
   
   const token = localStorage.getItem("bearerToken")
 
@@ -20,9 +17,15 @@ const People = () => {
   const [refetchTrigger, setTrigger] = useState(0)
 
   const {isAuthenticated, logout, attemptRefresh} = useAuth();
-  const {toggleLogin, setMessage} = useLogin();
+  const { setMessage} = useLogin();
 
-  const hasFetched = useRef(false)
+  const hasFetched = useRef(false);
+
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+
+  const personID = params.get("id");
+  const personURL = `${API_URL}/people/${personID}`;
 
 
   useEffect(() => {
@@ -34,6 +37,10 @@ const People = () => {
 
       try {
         setLoading(true)
+        if(personID === null && params.toString() !== "") {
+          navigate("/notfound");
+          return;
+        }
         const response = await fetch(personURL, {
           method: "GET",
           headers: {
@@ -66,8 +73,12 @@ const People = () => {
           }
         } else if (response.ok){
           setData(json);
+        } else if (response.status === 404) {
+          console.log("Invalid search parameter - no such person found", personID);
+          navigate("*")
+          return;
         } else {
-          throw new Error(json.message);
+          throw new Error(json.message)
         }
       } catch (error) {
         console.error("Error retrieving person:", error.message)
