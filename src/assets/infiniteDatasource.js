@@ -12,8 +12,6 @@ const infiniteDatasource = (URL, searchParams) => ({
       queryParams.append("page", page);
       
       const nextMoviesURL = `${API_URL}${URL}?${queryParams}`
-      // development
-      console.log(nextMoviesURL);
       
       const response = await fetch(nextMoviesURL)
       if (!response.ok) throw new Error("Inf - Failed to fetch data")

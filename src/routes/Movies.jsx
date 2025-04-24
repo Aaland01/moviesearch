@@ -37,10 +37,10 @@ const Movies = () => {
   const columns = [
     {headerName: "Title", field: "title"},
     {headerName: "Year", field: "year"},
-    {headerName: "Classification", field: "classification"},
-    {headerName: "IMDB", field: "imdbRating"},
-    {headerName: "RottenTomatoes", field: "rottenTomatoesRating"},
-    {headerName: "Metacritic", field: "metacriticRating"},
+    {headerName: "Classification", field: "classification", cellClass: "text-center"},
+    {headerName: "IMDB", field: "imdbRating", cellClass: "text-center"},
+    {headerName: "RottenTomatoes", field: "rottenTomatoesRating", cellClass: "text-center"},
+    {headerName: "Metacritic", field: "metacriticRating", cellClass: "text-center"},
     {headerName: "ID", field: "imdbID", hide: true},
   ]
 
@@ -50,7 +50,7 @@ const Movies = () => {
 
   return (
     <>
-      <Row className="vh-100">
+      <Row className="m-0">
         <Col className="col-3 text-center pt-5 bg-accent">
           <Row>
             <h5>Filter by year:</h5>
@@ -67,7 +67,6 @@ const Movies = () => {
             data = {datasource}
             columnDefs = {columns} 
             onRowClicked={(row) => {
-              console.log(row.data);
               navigate(`/movie?movieID=${row.data.imdbID}`
               )} 
             }

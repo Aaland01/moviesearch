@@ -2,7 +2,7 @@
 const Logo = () => {
   return (
     <>
-        <img className='clickable logo' src="MovieSearchLogo.png" />
+        <img alt="Moviesearch logo" className='clickable logo' src="MovieSearchLogo.png" />
     </>
   )
 };

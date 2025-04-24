@@ -53,7 +53,7 @@ img.poster {
 }
 
 .gridwrapper {
-  width: 70vw;
+  width: 90%;
   height: 100vh;
 }
 
@@ -81,4 +81,11 @@ img.poster {
   text-align: center;
   font-size: 24px;
   width: auto;
+}
+
+.loadingbar {
+  position: fixed;
+  top: 30vh; 
+  left: 40vw;
+  z-index: 1005;
 }
