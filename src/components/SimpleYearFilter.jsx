@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Button } from "reactstrap";
 
+// Hardcoded but can easily be made dynamic
+const lastYear = 2023;
+const startYear = 1990;
+
+export const years = Array.from(
+  { length: lastYear - startYear + 1 }, 
+  (_, i) => startYear + i
+);
+
 const SimpleYearFilter = ({ onApply }) => {
-
-  // Hardcoded but can easily be made dynamic
-  const lastYear = 2023;
-  const startYear = 1990;
-
-  const years = Array.from(
-    { length: lastYear - startYear + 1 }, 
-    (_, i) => startYear + i
-  );
 
   const [selectedYear, selectYear] = useState(0);
 
