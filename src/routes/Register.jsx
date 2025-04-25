@@ -191,6 +191,7 @@ const Register = () => {
                       handleEmailChange(e)
                     }}
                     invalid={invalidEmail}
+                    maxLength={50}
                   />
                   <FormFeedback valid={!invalidEmail}>
                     {errorMessage}
@@ -209,6 +210,7 @@ const Register = () => {
                     value={password}
                     onChange={e => handlePasswordChange(e.target.value)}
                     invalid={invalidPassword}
+                    maxLength={50}
                   />
                   <FormFeedback valid={!invalidPassword}>
                     {passwordMessage}
