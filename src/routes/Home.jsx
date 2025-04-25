@@ -1,8 +1,12 @@
 import { Col, Container, Row } from "reactstrap";
 import SearchBar from "../components/SearchBar";
 import Hero from "../components/Hero";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
   return (
     <>
       <Hero imagesrc={"heroimage.png"} />
@@ -10,7 +14,10 @@ const Home = () => {
       <Container className="text-center">
         <h1 className="title"> Moviesearch </h1>
         
-        <SearchBar />
+        <SearchBar onApply={(search) => {
+          console.log(`/movies?title=${search}`)
+          navigate(`/movies?title=${search}`)
+        }} />
 
         <Row>
           <Col className="col-6">

@@ -9,18 +9,26 @@ import infiniteDatasource from "../assets/infiniteDatasource";
 const Movies = () => {
 
   const [yearFilter, setYearFilter] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [searchFilter, setSearchFilter] = useState("")
 
   const moviesURL = "/movies/search"
   const [params] = useSearchParams();
   const titleParam = params.get("title")
+  const yearParam = params.get("year")
 
   const navigate = useNavigate();
 
   const searchParams = () => {
     const queryParams = new URLSearchParams();
-    if (titleParam) queryParams.append("title",titleParam);
-    if (yearFilter) queryParams.append("year",yearFilter);
+    if (titleParam) {
+      queryParams.append("title",titleParam);
+      if (titleParam !== searchFilter) setSearchFilter(titleParam);
+    }
+    if (yearParam) {
+      queryParams.append("year",yearParam);
+      if (yearParam !== yearFilter) setYearFilter(yearParam);
+    }
+    console.log("Table params:",queryParams.toString())
     return queryParams;
   }
 
@@ -29,7 +37,7 @@ const Movies = () => {
   const pageHeading = () => {
     let heading = "Movies"
     if (titleParam) heading += ` titled "${titleParam}"`
-    if (yearFilter) heading += ` from ${yearFilter}`;
+    if (yearParam) heading += ` from ${yearParam}`;
     else return "All " + heading
     return heading
   }
@@ -44,8 +52,22 @@ const Movies = () => {
     {headerName: "ID", field: "imdbID", hide: true},
   ]
 
-  const handleApply = (selectedYear) => {
+  const handleYearApply = (selectedYear) => {
     setYearFilter(selectedYear);
+    const newQueryParams = new URLSearchParams();
+    if (searchFilter) newQueryParams.append("title",searchFilter);
+    if (selectedYear) newQueryParams.append("year",selectedYear);
+    console.log("Year:",newQueryParams.toString())
+    navigate(`/movies?${newQueryParams.toString()}`)
+  }
+
+  const handleSearchApply = (selectedSearch) => {
+    setSearchFilter(selectedSearch);
+    const newQueryParams = new URLSearchParams();
+    if (selectedSearch) newQueryParams.append("title",selectedSearch);
+    if (yearFilter) newQueryParams.append("year",yearFilter);
+    console.log("Year:",newQueryParams.toString())
+    navigate(`/movies?${newQueryParams.toString()}`)
   }
 
   return (
@@ -56,12 +78,12 @@ const Movies = () => {
             <h5>Filter by year:</h5>
           </Row>
 
-          <SimpleYearFilter onApply={handleApply}/>
+          <SimpleYearFilter onApply={handleYearApply}/>
 
         </Col>
         <Col className="col-9">
           <h2 className="ps-5"> {pageHeading()} </h2>
-          <SearchBar />
+          <SearchBar onApply={handleSearchApply}/>
           
           <GridTable infinite = {true}
             data = {datasource}

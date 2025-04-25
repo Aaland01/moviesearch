@@ -14,7 +14,6 @@ const SimpleYearFilter = ({ onApply }) => {
 
   const [selectedYear, selectYear] = useState(0);
 
-
   const clear = () => {
     selectYear(0);
     applyFilter(0);
