@@ -182,6 +182,7 @@ const Register = () => {
                     Email
                   </Label>
                   <Input 
+                    className='border-secondary'
                     id="email" 
                     name="email"
                     placeholder=""
@@ -203,6 +204,7 @@ const Register = () => {
                     Password
                   </Label>
                   <Input 
+                    className='border-secondary'
                     id="password" 
                     name="password"
                     placeholder=""
@@ -220,6 +222,7 @@ const Register = () => {
                     Confirm Password
                   </Label>
                   <Input 
+                    className='border-primary'
                     id="confirmPassword" 
                     name="confirmPassword"
                     placeholder=""

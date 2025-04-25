@@ -99,6 +99,7 @@ const LoginBody = () => {
               Email
             </Label>
             <Input 
+              className='border-secondary'
               id="email" 
               name="email"
               placeholder=""
@@ -114,6 +115,7 @@ const LoginBody = () => {
               Password
             </Label>
             <Input 
+              className='border-secondary'
               id="password" 
               name="password"
               placeholder=""
