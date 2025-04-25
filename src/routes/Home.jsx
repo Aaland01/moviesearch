@@ -2,6 +2,7 @@ import { Col, Container, Row } from "reactstrap";
 import SearchBar from "../components/SearchBar";
 import Hero from "../components/Hero";
 import { useNavigate } from "react-router-dom";
+import YearButtons from "../components/YearButtons";
 
 const Home = () => {
 
@@ -20,11 +21,11 @@ const Home = () => {
         }} />
 
         <Row>
-          <Col className="col-6">
+          <Col className="col-12 col-md-6">
             <h3> Movies by year </h3>
-            <div className="tempbox"> Yearbuttons here </div>
+            <YearButtons />
           </Col>
-          <Col className="col-6 border-3 border-start border-accent">
+          <Col className="col-12 col-md-6 pt-4 pt-md-0 border-3 border-start border-accent">
             <h3> Highlighted movie </h3>
             <div className="tempbox"> Movie component here </div>
           </Col>
