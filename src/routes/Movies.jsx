@@ -64,7 +64,7 @@ const Movies = () => {
   const columns = [
     {headerName: "Title", field: "title"},
     {headerName: "Year", field: "year"},
-    {headerName: "Classification", field: "classification", cellClass: "text-center"},
+    {headerName: "Rated", field: "classification", headerClass: "text-center", cellClass: "text-center"},
     {headerName: "IMDB", field: "imdbRating", cellClass: "text-center"},
     {headerName: "RottenTomatoes", field: "rottenTomatoesRating", cellClass: "text-center"},
     {headerName: "Metacritic", field: "metacriticRating", cellClass: "text-center"},
@@ -75,7 +75,7 @@ const Movies = () => {
     //setYearFilter(selectedYear);
     console.log("Handled year:", selectedYear);
     const newQueryParams = new URLSearchParams();
-    if (searchParams) newQueryParams.append("title",searchParams);
+    if (titleParam) newQueryParams.append("title",titleParam);
     if (selectedYear) newQueryParams.append("year",selectedYear);
     console.log("Year:",newQueryParams.toString())
     navigate(`/movies?${newQueryParams.toString()}`)
