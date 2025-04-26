@@ -30,23 +30,29 @@ const Movie = () => {
       const response = await fetch(movieURL)
       const json = await response.json()
       //const poster = await handlePoster(json.poster);
-      setMovie(
-        {
-          title: json.title,
-          year: json.year,
-          country: json.country,
-          runtime: json.runtime,
-          boxoffice: json.boxoffice,
-          plot: json.plot,
-          poster: json.poster,
-        }
-      )
-      setGenres(json.genres);
-      setRatings(json.ratings)
-      setLoading(false);
-      setInvolved(json.principals);
+      if (response.ok) {
+        setMovie(
+          {
+            title: json.title,
+            year: json.year,
+            country: json.country,
+            runtime: json.runtime,
+            boxoffice: json.boxoffice,
+            plot: json.plot,
+            poster: json.poster,
+          }
+        )
+        setGenres(json.genres);
+        setRatings(json.ratings)
+        setLoading(false);
+        setInvolved(json.principals);
+      } else {
+        navigate("/notfound")
+        return;
+      }
+      
     } catch (error) {
-      console.error("Error fetching movie data", error.message)
+      console.error("Error fetching data for movie: ", error.message)
     }
   }
 

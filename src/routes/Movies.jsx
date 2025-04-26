@@ -31,13 +31,15 @@ const Movies = () => {
     const queryParams = new URLSearchParams();
     if (titleParam) {
       queryParams.append("title",titleParam);
-      //if (titleParam !== searchFilter) setSearchFilter(titleParam);
     }
     if (yearParam) {
-      queryParams.append("year",yearParam);
-      //if (yearParam !== yearFilter) setYearFilter(yearParam);
+      //Hardcoded validation check for year parameter
+      if (yearParam < 1990 || yearParam > 2023) {
+        console.warn("Invalid parameter for year");
+        params.delete("year");
+      }
+      else queryParams.append("year",yearParam);
     }
-    console.log("Table params:",queryParams.toString());
     return queryParams;
   }
 
@@ -73,11 +75,9 @@ const Movies = () => {
 
   const handleYearApply = (selectedYear) => {
     //setYearFilter(selectedYear);
-    console.log("Handled year:", selectedYear);
     const newQueryParams = new URLSearchParams();
     if (titleParam) newQueryParams.append("title",titleParam);
     if (selectedYear) newQueryParams.append("year",selectedYear);
-    console.log("Year:",newQueryParams.toString())
     navigate(`/movies?${newQueryParams.toString()}`)
   }
 
@@ -89,12 +89,7 @@ const Movies = () => {
     navigate(`/movies?${newQueryParams.toString()}`)
   }
 
-  const handleClear = () => {
-    //setSearchFilter("");
-    //setYearFilter(0);
-    console.log("Cleared all");
-    navigate(`/movies`)
-  }
+  const handleClear = () => navigate(`/movies`);
 
   return (
     <>
