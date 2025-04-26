@@ -7,7 +7,7 @@ const SearchBar = ( {onApply }) => {
 
   const handleSearch = () => {
     if (!search){
-      console.log("No search parameters")
+      console.warn("No search parameters")
       return;
     }
     onApply(search);

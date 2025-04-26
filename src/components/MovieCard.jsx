@@ -26,24 +26,18 @@ const MovieCard = () => {
     // Randomizing a year
     const randomYearIndex = Math.floor(Math.random() * (years.length));
     const randomYear = years[randomYearIndex];
-    console.log("Random year:",randomYear);
 
     // Randomizing a page of movies within that year
     const pagination = await fetchPagination(randomYear);
     const lastPage = pagination.lastPage;
-    console.log("LastPage: ", lastPage);
     const randomPage = Math.floor( Math.random() * lastPage + 1)
-    console.log("randomPage: ", randomPage);
     const moviesRange = await fetchMoviesData(randomYear, randomPage);
-    console.log("Movies:", moviesRange);
     
     // Randomizing an index within that page
     const randomIndex = Math.floor(Math.random() * moviesRange.length)
-    console.log("Random index:", randomIndex);
     
     const theMovie = moviesRange[randomIndex];
     theMovie.poster = await posterSrc(theMovie.movieID)
-    console.log("Random movie:", theMovie);
     
     setSelectedMovie(theMovie)
     
@@ -52,11 +46,10 @@ const MovieCard = () => {
 
   const posterSrc = async (movieID) => {
     const poster = await fetchPoster(movieID);
-    console.log(poster);
     
     if ( poster ) return poster;
     else {
-      console.log("Poster not found")
+      console.warn("Poster not found")
       return (
         "MovieSearchLogo.png"
       )

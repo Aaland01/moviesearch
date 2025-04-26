@@ -52,6 +52,7 @@ const Register = () => {
         } else {
           console.error("Error not regarding duplicate user:", json.message)
           setLoading(false)
+          return;
         }
       } else {
         setHappyMessage("User succesfully created!")
@@ -125,10 +126,7 @@ const Register = () => {
     setPasswordConfirm(newConfirm)
     if (!comparePasswords(password, newConfirm)) {
       updatePasswordError("Passwords do not match");
-    } else {
-      console.log("No errors");
-      clearPasswordError();
-    }
+    } else clearPasswordError();
   }
 
   const comparePasswords = (pass1, pass2) => {

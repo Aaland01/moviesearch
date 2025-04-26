@@ -16,10 +16,7 @@ const Home = () => {
       <Container className="text-center pb-5">
         <h1 className="title"> Moviesearch </h1>
         
-        <SearchBar onApply={(search) => {
-          console.log(`/movies?title=${search}`)
-          navigate(`/movies?title=${search}`)
-        }} />
+        <SearchBar onApply={ (search) => navigate(`/movies?title=${search}`) } />
 
         <Row>
           <Col className="col-12 col-md-6">

@@ -24,18 +24,13 @@ export const AuthWrapper = ({children}) => {
       const storedRefreshToken = localStorage.getItem("refreshToken");
       
       if (storedBearerToken && storedRefreshToken) {
-        console.log("Bearer token found");
         setUser(localStorage.getItem("email"))
         const refreshSuccess = await attemptRefresh();
         if (!refreshSuccess) {
-          console.log("Initial refresh failed");
           logout();
-        } else {
-          console.log("User refreshed");
         }
         
       } else {
-        console.log("Missing tokens - Not authenticated")
         logout();
       }
       setLoading(false);
@@ -51,7 +46,6 @@ export const AuthWrapper = ({children}) => {
    * Stores (DANGEROUS) tokens in localstorage and updates authenticated context
    */
   const login = (bearerToken, refreshToken, email) => {
-    console.log("[AUTH] LOGIN - Setting new tokens");
     localStorage.setItem("bearerToken", bearerToken);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("email", email)
@@ -63,7 +57,6 @@ export const AuthWrapper = ({children}) => {
    * Removes tokens from local storage and updates authenticated context
    */
   const logout = () => {
-    console.log("[AUTH] LOGOUT - Clearing tokens");
     localStorage.removeItem("bearerToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("email");
@@ -97,10 +90,7 @@ export const AuthWrapper = ({children}) => {
         const email = localStorage.getItem("email")
         login(newBearer, newRefresh, email)
         return true;
-      } else {
-        console.warn("Else triggered, refreshToken is null");
-        return false;
-      }
+      } else return false;
     } catch (error) {
       console.error("Attemptrefresh failed:", error.message)
       return false;

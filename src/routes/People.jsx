@@ -51,7 +51,6 @@ const People = () => {
         const json = await response.json();
         if ( response.status === 401 ) {
           if (json.message.includes("expired")) {
-            console.log("JWT Token expired, attempting refresh:");
             const refreshAttempt = await attemptRefresh();
             if (refreshAttempt){
               hasFetched.current = false;
@@ -59,14 +58,13 @@ const People = () => {
               setLoading(false);
               return;
             } else {
-              console.log("Refresh failed");
               logout();
               setMessage("Session expired. Please log in")
               setLoading(false);
               return;
             }
           } else {
-            console.log("Non-expired 401: ", json.message);
+            console.warn("Non-expired 401: ", json.message);
             setMessage("You need an account to access this content. Please log in or register")
             setLoading(false);
             return;
@@ -74,8 +72,7 @@ const People = () => {
         } else if (response.ok){
           setData(json);
         } else if (response.status === 404) {
-          console.log("Invalid search parameter - no such person found", personID);
-          navigate("*")
+          navigate("/notfound")
           return;
         } else {
           throw new Error(json.message)

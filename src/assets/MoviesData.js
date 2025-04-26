@@ -9,7 +9,6 @@ const moviesURL = (yearFilter, page) => {
     if (queryParams.toString()) {
       moviesURL += `?${queryParams.toString()}`
     }
-    console.log("Crafted moviesURL: ", moviesURL)
     return moviesURL;
   }
 
@@ -21,16 +20,14 @@ const moviesURL = (yearFilter, page) => {
       let paramURL = `${API_URL}/movies/search`
       const params = queryParams.toString() ? queryParams.toString() : ""
       if ( params ) paramURL += `?${params}`;
-      console.log(paramURL);
       const response = await fetch(paramURL)
       const json = await response.json()
       const pagination = json.pagination
-      console.log("pagination: ",pagination);
       
       return pagination;
     
     } catch (error) {
-      console.error("[MoviesData] Error retrieving Movies", error.message)
+      console.error("Error retrieving pagination data", error.message)
     }
   }
 
@@ -50,20 +47,17 @@ export const fetchMoviesData = async (yearFilter, page) => {
     })
   
   } catch (error) {
-    console.error("[MoviesData] Error retrieving Movies", error.message)
+    console.error("Error retrieving Movies data", error.message)
   }
 }
 
 export const fetchPoster = async (movieID) => {
   try {
-    if (!movieID) {
-      console.log("MovieID is null");
-      return;
-    }
+    if (!movieID) return;
     const response = await fetch(`${API_URL}/movies/data/${movieID}`)
     const json = await response.json()
     return json.poster;
   } catch (error) {
-    console.error("Error fetching movie data", error.message)
+    console.error("Error fetching poster", error.message)
   }
 }
