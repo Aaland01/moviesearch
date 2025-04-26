@@ -39,7 +39,7 @@ export const boxofficePrettyPrint = (boxoffice) => {
     if (!boxoffice) return "No Records";
     let numberString = boxoffice.toString();
     let print = ""
-    for(let i = 1; i < numberString.length; i++){
+    for(let i = 0; i < numberString.length; i++){
       if ((numberString.length - i) % 3 === 0){
         print += " ";
       }
@@ -61,3 +61,17 @@ export const runtimePrettyPrint = (runtime) => {
     let minutes = runtime - hours*60;
     return `${hours} hours, ${minutes} minutes`;
     }
+
+export const resultsPrettyPrint = (results) => {
+  if (results === 0) return "No movies match the parameters";
+  else if (results === 1) return "A single movie";
+  let resultsString = results.toString();
+  let print = "";
+  for(let i = 0; i < resultsString.length; i++){
+    if ((resultsString.length - i) % 3 === 0){
+      print += " ";
+    };
+    print += resultsString[i]
+  };
+  return `${print} movies`;
+}

@@ -1,15 +1,18 @@
-import { Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import GridTable from "../components/GridTable";
 import SimpleYearFilter from "../components/SimpleYearFilter";
 import infiniteDatasource from "../assets/infiniteDatasource";
+import { fetchPagination } from "../assets/MoviesData";
+import { resultsPrettyPrint } from "../assets/PrettyPrints";
 
 const Movies = () => {
 
-  const [yearFilter, setYearFilter] = useState(null)
-  const [searchFilter, setSearchFilter] = useState("")
+  // const [yearFilter, setYearFilter] = useState(null)
+  // const [searchFilter, setSearchFilter] = useState("")
+  const [results, setResults] = useState();
 
   const moviesURL = "/movies/search"
   const [params] = useSearchParams();
@@ -18,21 +21,37 @@ const Movies = () => {
 
   const navigate = useNavigate();
 
+  const hasFetched = useRef(false);
+
+  useEffect( () => {
+    getResults(yearParam, titleParam)
+  }, [yearParam, titleParam])
+
   const searchParams = () => {
     const queryParams = new URLSearchParams();
     if (titleParam) {
       queryParams.append("title",titleParam);
-      if (titleParam !== searchFilter) setSearchFilter(titleParam);
+      //if (titleParam !== searchFilter) setSearchFilter(titleParam);
     }
     if (yearParam) {
       queryParams.append("year",yearParam);
-      if (yearParam !== yearFilter) setYearFilter(yearParam);
+      //if (yearParam !== yearFilter) setYearFilter(yearParam);
     }
-    console.log("Table params:",queryParams.toString())
+    console.log("Table params:",queryParams.toString());
     return queryParams;
   }
 
-  const datasource = infiniteDatasource(moviesURL,searchParams());
+  const datasource = infiniteDatasource(moviesURL, searchParams());
+
+  const getResults = async (resultsYear, resultsTitle) => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
+    const results = await fetchPagination(resultsYear, resultsTitle);
+    
+    setResults(resultsPrettyPrint(results.total))
+    hasFetched.current = false;
+  }
 
   const pageHeading = () => {
     let heading = "Movies"
@@ -53,33 +72,48 @@ const Movies = () => {
   ]
 
   const handleYearApply = (selectedYear) => {
-    setYearFilter(selectedYear);
+    //setYearFilter(selectedYear);
+    console.log("Handled year:", selectedYear);
     const newQueryParams = new URLSearchParams();
-    if (searchFilter) newQueryParams.append("title",searchFilter);
+    if (searchParams) newQueryParams.append("title",searchParams);
     if (selectedYear) newQueryParams.append("year",selectedYear);
     console.log("Year:",newQueryParams.toString())
     navigate(`/movies?${newQueryParams.toString()}`)
   }
 
   const handleSearchApply = (selectedSearch) => {
-    setSearchFilter(selectedSearch);
+    //setSearchFilter(selectedSearch);
     const newQueryParams = new URLSearchParams();
     if (selectedSearch) newQueryParams.append("title",selectedSearch);
-    if (yearFilter) newQueryParams.append("year",yearFilter);
-    console.log("Year:",newQueryParams.toString())
+    if (yearParam) newQueryParams.append("year",yearParam);
     navigate(`/movies?${newQueryParams.toString()}`)
+  }
+
+  const handleClear = () => {
+    //setSearchFilter("");
+    //setYearFilter(0);
+    console.log("Cleared all");
+    navigate(`/movies`)
   }
 
   return (
     <>
       <Row className="m-0">
         <Col className="col-3 text-center pt-5 bg-accent">
-          <Row>
-            <h5>Filter by year:</h5>
-          </Row>
+
+          <div className="pb-md-3">
+            <h3>Results</h3>
+            <p>{results}</p>
+          </div>
+          
+          <h5>Filter by year:</h5>
+          
 
           <SimpleYearFilter onApply={handleYearApply}/>
 
+          <Button className="mt-4 clickable" size="sm" onClick={handleClear} color="primary">
+            Clear all filters
+          </Button>
         </Col>
         <Col className="col-9">
           <h2 className="ps-5"> {pageHeading()} </h2>

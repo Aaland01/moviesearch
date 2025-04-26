@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { ratingsPrettyPrint } from "./PrettyPrints";
 import { API_URL } from "../Moviesearch";
 
@@ -14,9 +13,16 @@ const moviesURL = (yearFilter, page) => {
     return moviesURL;
   }
 
-  export const fetchPagination = async (yearFilter) => {
+  export const fetchPagination = async (yearFilter, searchFilter) => {
     try {
-      const response = await fetch(moviesURL(yearFilter))
+      const queryParams = new URLSearchParams();
+      if (yearFilter) queryParams.append("year",yearFilter);
+      if (searchFilter) queryParams.append("title",searchFilter);
+      let paramURL = `${API_URL}/movies/search`
+      const params = queryParams.toString() ? queryParams.toString() : ""
+      if ( params ) paramURL += `?${params}`;
+      console.log(paramURL);
+      const response = await fetch(paramURL)
       const json = await response.json()
       const pagination = json.pagination
       console.log("pagination: ",pagination);

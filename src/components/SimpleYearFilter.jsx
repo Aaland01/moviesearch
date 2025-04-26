@@ -14,11 +14,6 @@ const SimpleYearFilter = ({ onApply }) => {
 
   const [selectedYear, selectYear] = useState(0);
 
-  const clear = () => {
-    selectYear(0);
-    applyFilter(0);
-  }
-
   const handleYearSet = (year) => {
     console.log(year);
     selectYear(year);
@@ -34,7 +29,7 @@ const SimpleYearFilter = ({ onApply }) => {
       <label htmlFor="year-select" className="form-label me-2">
         Select:
       </label>
-      <div className="mx-5">
+      <div className="mx-0 mx-md-5">
         <select
           id="year-select"
           className="form-select"
@@ -48,14 +43,10 @@ const SimpleYearFilter = ({ onApply }) => {
         </select>
       </div>
       <div>
-        <Button className="mt-3" size="md" onClick={applyFilter} color="success">
+        <Button className="clickable mt-3" size="md" onClick={applyFilter} color="success">
           Apply
         </Button>
       </div>
-      <Button className="mt-2" size="sm" onClick={clear} color="primary">
-        Clear
-      </Button>
-
 
     </>
   )
