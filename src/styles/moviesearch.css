@@ -1,9 +1,3 @@
-.tempbox {
-  height: 50vh;
-  margin: 5px;
-  border: 1px gray solid;
-}
-
 .clickable {
   will-change: transform;
   transition: transform 200ms;
@@ -36,33 +30,11 @@ img.poster {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-@media screen and (max-width: 360px) {
-  .title {
-    font-size: 2em;
-  }
-
-  .herowrapper img{
-    display: none;
-  }
-
-  img.poster {
-    width: 50vw;
-  }
+  filter: blur(4px);
 }
 
 .people {
   max-width: 65vw;
-}
-
-@media screen and (max-width: 768px) and (min-width: 361px) {
-  .people {
-    max-width: 95vw;
-  }
-  img.poster {
-    width: 185px;
-  }
 }
 
 .gridwrapper {
@@ -90,12 +62,6 @@ img.poster {
   width: 2vw;
 }
 
-.year-display {
-  text-align: center;
-  font-size: 24px;
-  width: auto;
-}
-
 .loadingbar {
   position: fixed;
   top: 30vh; 
@@ -107,11 +73,26 @@ img.poster {
   list-style-type: none;
 }
 
-.genre {
-  background-color: none !important;
-  color: white;
+
+@media screen and (max-width: 360px) {
+  .title {
+    font-size: 2em;
+  }
+
+  .herowrapper img{
+    display: none;
+  }
+
+  img.poster {
+    width: 50vw;
+  }
 }
 
-.hero {
-  filter: blur(4px);
+@media screen and (max-width: 768px) and (min-width: 361px) {
+  .people {
+    max-width: 95vw;
+  }
+  img.poster {
+    width: 185px;
+  }
 }
