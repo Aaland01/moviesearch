@@ -109,3 +109,7 @@ img.poster {
   background-color: none !important;
   color: white;
 }
+
+.hero {
+  filter: blur(4px);
+}
