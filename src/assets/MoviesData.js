@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { ratingsPrettyPrint } from "./PrettyPrints";
+import { API_URL } from "../Moviesearch";
 
-const moviesURL = () => {
+const moviesURL = (yearFilter, page) => {
     let moviesURL = `${API_URL}/movies/search`
     const queryParams = new URLSearchParams();
-    if (titleParam) queryParams.append("title",titleParam);
     if (yearFilter) queryParams.append("year",yearFilter);
+    if (page) queryParams.append("page",page);
     if (queryParams.toString()) {
       moviesURL += `?${queryParams.toString()}`
     }
@@ -13,28 +14,50 @@ const moviesURL = () => {
     return moviesURL;
   }
 
-const fetchMovies = async () => {
+  export const fetchPagination = async (yearFilter) => {
+    try {
+      const response = await fetch(moviesURL(yearFilter))
+      const json = await response.json()
+      const pagination = json.pagination
+      console.log("pagination: ",pagination);
+      
+      return pagination;
+    
+    } catch (error) {
+      console.error("[MoviesData] Error retrieving Movies", error.message)
+    }
+  }
+
+export const fetchMoviesData = async (yearFilter, page) => {
   try {
-    const response = await fetch(moviesURL())
+    const response = await fetch(moviesURL(yearFilter, page))
     const json = await response.json()
     const data = json.data
-    setMovies(
-      data.map( movie => {
-        return {
-          title: movie.title,
-          year: movie.year,
-          classification: movie.classification,
-          ratings: ratingsPrettyPrint(movie),
-          movieID: movie.imdbID,
-        }
-      })
-    )
-    setLoading(false)
+    return data.map( movie => {
+      return {
+        title: movie.title,
+        year: movie.year,
+        classification: movie.classification,
+        ratings: ratingsPrettyPrint(movie),
+        movieID: movie.imdbID,
+      }
+    })
+  
   } catch (error) {
-    console.error("Error retrieving data", error.message)
+    console.error("[MoviesData] Error retrieving Movies", error.message)
   }
 }
 
-useEffect(() => {
-  fetchMovies()
-}, [params, yearFilter])
+export const fetchPoster = async (movieID) => {
+  try {
+    if (!movieID) {
+      console.log("MovieID is null");
+      return;
+    }
+    const response = await fetch(`${API_URL}/movies/data/${movieID}`)
+    const json = await response.json()
+    return json.poster;
+  } catch (error) {
+    console.error("Error fetching movie data", error.message)
+  }
+}

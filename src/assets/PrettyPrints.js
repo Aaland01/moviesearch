@@ -18,11 +18,13 @@ export const ratingsPrettyPrint = (movieObj) => {
     if(movieObj.imdbRating){
       let imdbRating = movieObj.imdbRating.toString();
       if(!imdbRating.includes(".")) imdbRating += ".0";
-      ratings.push(imdbRating)
+      ratings.push(`${imdbRating}/10`)
     } else ratings.push("\u00A0\u00A0\u00A0");
 
-    ratings.push(movieObj.rottenTomatoesRating ? movieObj.rottenTomatoesRating.toString() : "\u00A0\u00A0\u00A0\u00A0\u00A0");
-    ratings.push(movieObj.metacriticRating ? movieObj.metacriticRating.toString() : "");
+    const rottenRating = movieObj.rottenTomatoesRating ? `${movieObj.rottenTomatoesRating.toString()}/100` : "\u00A0\u00A0\u00A0\u00A0\u00A0";
+    const metaRating = movieObj.metacriticRating ? `${movieObj.metacriticRating.toString()}/100`  : "";
+    ratings.push(rottenRating);
+    ratings.push(metaRating);
     
     return ratings.join("\u00A0\u00A0\u00A0");
   }

@@ -11,9 +11,9 @@ const Home = () => {
 
   return (
     <>
-      <Hero imagesrc={"heroimage.png"} />
+      
 
-      <Container className="text-center">
+      <Container className="text-center pb-5">
         <h1 className="title"> Moviesearch </h1>
         
         <SearchBar onApply={(search) => {
@@ -27,7 +27,7 @@ const Home = () => {
             <YearButtons />
           </Col>
           <Col className="col-12 col-md-6 pt-4 pt-md-0">
-            <h3> Highlighted movie </h3>
+            <h3> Randomizer </h3>
             <MovieCard />
           </Col>
         </Row>
