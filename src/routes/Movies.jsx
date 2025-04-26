@@ -16,8 +16,21 @@ const Movies = () => {
 
   const moviesURL = "/movies/search"
   const [params] = useSearchParams();
-  const titleParam = params.get("title")
-  const yearParam = params.get("year")
+  const titleParam = params.get("title");
+
+  //Hardcoded validation check for year parameter
+  const yearValidation = () => {
+    let year = params.get("year");
+    console.log("Year:", year);
+    if (year !== null) {
+      if ( !( /[0-9]+/.test(year) && year >= 1990 && year <= 2023) ) {
+        params.delete("year");
+        return null;
+      } else return year;
+    } return null;
+  }
+
+  const yearParam = yearValidation();
 
   const navigate = useNavigate();
 
@@ -32,13 +45,8 @@ const Movies = () => {
     if (titleParam) {
       queryParams.append("title",titleParam);
     }
-    if (yearParam) {
-      //Hardcoded validation check for year parameter
-      if (yearParam < 1990 || yearParam > 2023) {
-        console.warn("Invalid parameter for year");
-        params.delete("year");
-      }
-      else queryParams.append("year",yearParam);
+    if (yearParam ) {
+      queryParams.append("year",yearParam);
     }
     return queryParams;
   }
