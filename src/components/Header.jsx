@@ -30,17 +30,14 @@ const Header = () => {
     <>
       <Navbar className='px-4' color="background" expand="md" dark>
 
-        {/* Logo */}
         <NavbarBrand tag={Link} to="/">
           <Logo />
           <h5 className='clickable d-none d-sm-inline ps-2'>Moviesearch</h5>
         </NavbarBrand>
 
-
-        {/* Collapse button for responsiveness */}
         <NavbarToggler className='ms-auto me-4' onClick={toggleNav}/>
 
-        {/* Button for when screens are small*/}
+        {/* Button for small screens*/}
         <LogInButton className='d-md-none' />
 
         <Collapse className='me-3' isOpen={collapse} navbar>

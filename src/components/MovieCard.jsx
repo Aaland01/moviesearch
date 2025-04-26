@@ -6,14 +6,6 @@ import { Link } from "react-router-dom";
 
 const MovieCard = () => {
 
-  /*
-      title: movie.title,
-      year: movie.year,
-      classification: movie.classification,
-      ratings: ratingsPrettyPrint(movie),
-      movieID: movie.imdbID,
-  */
-
   const [selectedMovie, setSelectedMovie] = useState({});
 
   /**
