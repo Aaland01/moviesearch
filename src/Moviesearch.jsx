@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './styles/moviesearch.css'
 import { LoginWrapper } from './assets/LoginContext'
 import { AuthWrapper } from './assets/AuthContext'
@@ -11,6 +11,7 @@ import People from './routes/People'
 import NavigationReset from './assets/NavigationReset'
 import Login from './components/Login'
 import Register from './routes/Register'
+import NotFound from './routes/NotFound'
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,6 +33,8 @@ function Moviesearch() {
                   <Route path='/movie' element={<Movie />} />
                   <Route path='/people' element={<People />} />
                   <Route path='/register' element={<Register />} />
+                  <Route path='/notfound' element={<NotFound />} />
+                  <Route path='*' element={<Navigate to={"/notfound"}/>} />
                 </Routes>
               </main>
               <Footer />

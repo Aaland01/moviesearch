@@ -1,6 +1,7 @@
 import { Container } from "reactstrap";
 import GridTable from "../components/GridTable";
 import { useNavigate } from "react-router-dom";
+import Graph from "./Graph";
 
 
 /**
@@ -19,7 +20,7 @@ const Person = ({name, birthYear, deathYear, movies}) => {
     {headerName: "Characters", field: "characters", 
       valueFormatter: characters => characters[0]},
     {headerName: "IMDBrating", field: "imdbRating"},
-    {headerName: "ID", field: "movieID", hide: true},
+    {headerName: "ID", field: "movieId", hide: true},
   ]
 
   return (
@@ -36,16 +37,14 @@ const Person = ({name, birthYear, deathYear, movies}) => {
             <GridTable 
               data={movies}
               columnDefs={columns}
-              onRowClicked={row => navigate(
-                `/movie?movieid=${row.data.movieID}`
-              )}
+              onRowClicked={row => 
+                navigate(`/movie?movieID=${row.data.movieId}`)
+              }
             />
           </div>
-          <div className="text-end pt-3">
-            <h4 className="pe-5">Ratings at a glance</h4>
-            <div className="tempbox">
-              Diagram
-            </div>
+          <div className="py-5">
+            <h4 className="text-end pe-5">Ratings at a glance</h4>
+            <Graph movies={movies}/>
           </div>
         </Container>
     </>

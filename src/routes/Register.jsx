@@ -52,6 +52,7 @@ const Register = () => {
         } else {
           console.error("Error not regarding duplicate user:", json.message)
           setLoading(false)
+          return;
         }
       } else {
         setHappyMessage("User succesfully created!")
@@ -125,10 +126,7 @@ const Register = () => {
     setPasswordConfirm(newConfirm)
     if (!comparePasswords(password, newConfirm)) {
       updatePasswordError("Passwords do not match");
-    } else {
-      console.log("No errors");
-      clearPasswordError();
-    }
+    } else clearPasswordError();
   }
 
   const comparePasswords = (pass1, pass2) => {
@@ -182,6 +180,7 @@ const Register = () => {
                     Email
                   </Label>
                   <Input 
+                    className='border-secondary'
                     id="email" 
                     name="email"
                     placeholder=""
@@ -191,6 +190,7 @@ const Register = () => {
                       handleEmailChange(e)
                     }}
                     invalid={invalidEmail}
+                    maxLength={50}
                   />
                   <FormFeedback valid={!invalidEmail}>
                     {errorMessage}
@@ -202,6 +202,7 @@ const Register = () => {
                     Password
                   </Label>
                   <Input 
+                    className='border-secondary'
                     id="password" 
                     name="password"
                     placeholder=""
@@ -209,6 +210,7 @@ const Register = () => {
                     value={password}
                     onChange={e => handlePasswordChange(e.target.value)}
                     invalid={invalidPassword}
+                    maxLength={50}
                   />
                   <FormFeedback valid={!invalidPassword}>
                     {passwordMessage}
@@ -218,6 +220,7 @@ const Register = () => {
                     Confirm Password
                   </Label>
                   <Input 
+                    className='border-primary'
                     id="confirmPassword" 
                     name="confirmPassword"
                     placeholder=""
@@ -229,12 +232,7 @@ const Register = () => {
                 </FormGroup>
               </div>
               <div className='pt-3'>
-                <Button color="success" type='submit' disabled={invalidEmail || invalidPassword || loading}>Register</Button>
-              </div>
-              <div className='pt-3'>
-                <Button color="success" onClick={() => setHappyMessage("Yay")}>
-                  Tester
-                </Button>
+                <Button className='clickable' color="success" type='submit' disabled={invalidEmail || invalidPassword || loading}>Register</Button>
               </div>
             </Form>
           </Col>

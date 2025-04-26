@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import GridTable from "../components/GridTable";
 import Hero from "../components/Hero";
 import { boxofficePrettyPrint, runtimePrettyPrint } from "../assets/PrettyPrints";
+import GenreBadges from "../components/GenreBadges";
 
 const Movie = () => {
 
@@ -18,30 +19,40 @@ const Movie = () => {
   const navigate = useNavigate();
 
   const [params] = useSearchParams();
-  const movieURL = `${API_URL}/movies/data/${params.get("movieID")}`
+  const movieID = params.get("movieID");
+  const movieURL = `${API_URL}/movies/data/${movieID}`
 
   const fetchMovieData = async () => {
     try {
+      if (movieID === null) {
+        navigate("/notfound")
+      }
       const response = await fetch(movieURL)
       const json = await response.json()
       //const poster = await handlePoster(json.poster);
-      setMovie(
-        {
-          title: json.title,
-          year: json.year,
-          country: json.country,
-          runtime: json.runtime,
-          boxoffice: json.boxoffice,
-          plot: json.plot,
-          poster: json.poster,
-        }
-      )
-      setGenres(json.genres);
-      setRatings(json.ratings)
-      setLoading(false);
-      setInvolved(json.principals);
+      if (response.ok) {
+        setMovie(
+          {
+            title: json.title,
+            year: json.year,
+            country: json.country,
+            runtime: json.runtime,
+            boxoffice: json.boxoffice,
+            plot: json.plot,
+            poster: json.poster,
+          }
+        )
+        setGenres(json.genres);
+        setRatings(json.ratings)
+        setLoading(false);
+        setInvolved(json.principals);
+      } else {
+        navigate("/notfound")
+        return;
+      }
+      
     } catch (error) {
-      console.error("Error fetching movie data", error.message)
+      console.error("Error fetching data for movie: ", error.message)
     }
   }
 
@@ -101,13 +112,7 @@ const Movie = () => {
               {runtimePrettyPrint(movie.runtime)}
             </div>
             <div className="genres mt-3">
-              {
-                genres.map(genre => (
-                  <Badge key={genre} color="primary" className={`genre ${genre} px-2 me-2`}>
-                    {genre}
-                  </Badge>
-                ))
-              }
+              <GenreBadges genres={genres} />
             </div>
             <div className="buttonwrapper mt-3 m-md-1 text-start text-md-end">
               <Button 

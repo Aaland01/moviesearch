@@ -80,16 +80,6 @@ const LoginBody = () => {
     clear();
   }
 
-  /**
-   * Development method
-   * Cheatloging to avoid entering details
-   */
-  const cheatLogin = () => {
-    setEmail("mike@gmail.com");
-    setPassword("password")
-    setMessage("Cheater!")
-  };  
-
   return (
     <>
       <Form onSubmit={e => handleSubmit(e)}>
@@ -99,6 +89,7 @@ const LoginBody = () => {
               Email
             </Label>
             <Input 
+              className='border-secondary'
               id="email" 
               name="email"
               placeholder=""
@@ -114,6 +105,7 @@ const LoginBody = () => {
               Password
             </Label>
             <Input 
+              className='border-secondary'
               id="password" 
               name="password"
               placeholder=""
@@ -129,10 +121,6 @@ const LoginBody = () => {
         <ModalFooter>
           <Button color="success" type='submit' disabled={invalidLogin || loading}>Log in</Button>
           <Button color="danger" onClick={cancel}>Cancel</Button>
-          {/*  Cheatlogin for development   */}
-          <div>
-            <Button color="secondary" onClick={cheatLogin}>cheatLogin</Button>
-          </div>
         </ModalFooter>
       </Form>
 

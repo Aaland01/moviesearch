@@ -8,7 +8,7 @@ const Hero = ({imagesrc}) => {
         <div className="herowrapper">
             <img 
               src={imagesrc} 
-              className="img-fluid" 
+              className="img-fluid hero" 
               onError={e => {
                 e.target.onError=null;e.target.className="d-none"
               }}

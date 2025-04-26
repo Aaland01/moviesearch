@@ -1,47 +1,42 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Container } from "reactstrap";
 
-const SearchBar = () => {
+const SearchBar = ( {onApply }) => {
 
   const [search, setSearch] = useState("");
-  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (!search){
-      console.log("No search parameters")
+      console.warn("No search parameters")
       return;
     }
-    let url = `/movies?title=${search}`
-    navigate(url)
+    onApply(search);
   }
 
   return (
     <>
       <div className="mt-3 mb-5">
-        <Row className="align-items-center justify-content-sm-center justify-content-start">
-          <Col className="col-7 px-2 px-sm-0">
-            <input className="w-100 p-2 px-3 bg-accent rounded-pill" type="search" name="search" id="search" 
-              aria-labelledby="search-button"
-              value={search}
-              onChange={e => {
-                setSearch(e.target.value);
-              }}
-            />
-          </Col>
-          <Col className="col-2">
-            <Button 
-            className="clickable" 
+        <Container>
+          <input maxLength={50} 
+            className="w-75 p-2 px-3 bg-accent rounded-pill" 
+            type="search" name="search" id="search" 
+            aria-labelledby="search-button"
+            value={search}
+            onChange={e => {
+              setSearch(e.target.value);
+            }}
+          />
+          <Button 
+            className="clickable ms-2"
             disabled={search ? false : true} 
             id="search-button" 
             color="primary" 
             type="button"
             onClick={handleSearch}
-            >
-              Search
-            </Button>
-          </Col>
-        </Row>
+          >
+            Search
+          </Button>
+        </Container>
       </div>
     </>
   )

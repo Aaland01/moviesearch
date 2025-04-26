@@ -4,10 +4,6 @@ import { useAuth } from '../assets/AuthContext';
 import LogoutBody from './LogoutBody';
 import LoginBody from './LoginBody';
 
-/**
-   * API url for the project
-   */
-
 const Login = () => {
 
   // Login context

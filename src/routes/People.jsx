@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { API_URL } from "../Moviesearch";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Person from "../components/Person";
 import { useAuth } from "../assets/AuthContext";
 import { useLogin } from "../assets/LoginContext";
@@ -8,9 +8,6 @@ import LogInButton from "../components/LogInButton";
 import { Container } from "reactstrap";
 
 const People = () => {
-
-  const [params] = useSearchParams();
-  const personURL = `${API_URL}/people/${params.get("id")}`
   
   const token = localStorage.getItem("bearerToken")
 
@@ -20,9 +17,15 @@ const People = () => {
   const [refetchTrigger, setTrigger] = useState(0)
 
   const {isAuthenticated, logout, attemptRefresh} = useAuth();
-  const {toggleLogin, setMessage} = useLogin();
+  const { setMessage} = useLogin();
 
-  const hasFetched = useRef(false)
+  const hasFetched = useRef(false);
+
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+
+  const personID = params.get("id");
+  const personURL = `${API_URL}/people/${personID}`;
 
 
   useEffect(() => {
@@ -34,6 +37,10 @@ const People = () => {
 
       try {
         setLoading(true)
+        if(personID === null && params.toString() !== "") {
+          navigate("/notfound");
+          return;
+        }
         const response = await fetch(personURL, {
           method: "GET",
           headers: {
@@ -44,7 +51,6 @@ const People = () => {
         const json = await response.json();
         if ( response.status === 401 ) {
           if (json.message.includes("expired")) {
-            console.log("JWT Token expired, attempting refresh:");
             const refreshAttempt = await attemptRefresh();
             if (refreshAttempt){
               hasFetched.current = false;
@@ -52,22 +58,24 @@ const People = () => {
               setLoading(false);
               return;
             } else {
-              console.log("Refresh failed");
               logout();
               setMessage("Session expired. Please log in")
               setLoading(false);
               return;
             }
           } else {
-            console.log("Non-expired 401: ", json.message);
+            console.warn("Non-expired 401: ", json.message);
             setMessage("You need an account to access this content. Please log in or register")
             setLoading(false);
             return;
           }
         } else if (response.ok){
           setData(json);
+        } else if (response.status === 404) {
+          navigate("/notfound")
+          return;
         } else {
-          throw new Error(json.message);
+          throw new Error(json.message)
         }
       } catch (error) {
         console.error("Error retrieving person:", error.message)

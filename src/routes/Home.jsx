@@ -1,31 +1,32 @@
 import { Col, Container, Row } from "reactstrap";
 import SearchBar from "../components/SearchBar";
 import Hero from "../components/Hero";
+import { useNavigate } from "react-router-dom";
+import YearButtons from "../components/YearButtons";
+import MovieCard from "../components/MovieCard";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
   return (
     <>
-      <Hero imagesrc={"heroimage.png"} />
+      
 
-      <Container className="text-center">
+      <Container className="text-center pb-5">
         <h1 className="title"> Moviesearch </h1>
         
-        <SearchBar />
+        <SearchBar onApply={ (search) => navigate(`/movies?title=${search}`) } />
 
         <Row>
-          <Col className="col-6">
+          <Col className="col-12 col-md-6">
             <h3> Movies by year </h3>
-            <div className="tempbox"> Yearbuttons here </div>
+            <YearButtons />
           </Col>
-          <Col className="col-6 border-3 border-start border-accent">
-            <h3> Highlighted movie </h3>
-            <div className="tempbox"> Movie component here </div>
+          <Col className="col-12 col-md-6 pt-4 pt-md-0">
+            <h3> Randomizer </h3>
+            <MovieCard />
           </Col>
-        </Row>
-        
-        <Row className="pt-3 border-3 border-top border-accent">
-          <h4> Some movies </h4>
-          <div className="tempbox"> Lots of movie cards here </div>
         </Row>
 
       </Container>

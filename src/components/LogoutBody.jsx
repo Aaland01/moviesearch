@@ -32,7 +32,7 @@ const LogoutBody = () => {
       const response = await fetch(logoutURL, requestOptions)
       const json = await response.json()
       
-      if (json.error) console.error("Response error:", json.message)
+      if (json.error) console.warn("Error when logging out: ", json.message)
       setMessage("You've successfully logged out. Goodbye!")
       // + removing tokens from localstorage
       

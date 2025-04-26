@@ -17,10 +17,16 @@ const Footer = () => {
         <Row className="gx-0 pb-3">
           <Col className="order-2">
             <div>
-              <ul>
-                  <li>Contact</li>
-                  <li>About</li>
-                  <li>These dont work</li>
+              <ul className="footerlist ps-2 list-group">
+                  <li>
+                    <Link className="text-background" to={"/"}>Home</Link>
+                  </li>
+                  <li>
+                    <Link className="text-background" to={"/register"}>Register</Link>
+                  </li>
+                  <li>
+                    <Link className="text-background" to={"/movies"}>Movies</Link>
+                  </li>                  
                 </ul>
             </div>
           </Col>
@@ -39,7 +45,12 @@ const Footer = () => {
           </Col>
         </Row>
 
-
+        <div className="text-center">
+          All data from IMDB, Metacritic and RottenTomatoes
+        </div>
+        <p className="text-center">
+          © Haakon Aaland
+        </p>
         <div className="basement">
           {["shadow","secondary","success","danger","accent"].map(color => (
             <div key={`${color} circle`} className={`footerbadge rounded-circle bg-${color}`}></div>
