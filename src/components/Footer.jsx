@@ -45,7 +45,12 @@ const Footer = () => {
           </Col>
         </Row>
 
-
+        <div className="text-center">
+          All data from IMDB, Metacritic and RottenTomatoes
+        </div>
+        <p className="text-center">
+          © Haakon Aaland
+        </p>
         <div className="basement">
           {["shadow","secondary","success","danger","accent"].map(color => (
             <div key={`${color} circle`} className={`footerbadge rounded-circle bg-${color}`}></div>
