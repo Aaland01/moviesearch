@@ -52,14 +52,16 @@ img.poster {
   }
 }
 
-
 .people {
   max-width: 65vw;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) and (min-width: 361px) {
   .people {
     max-width: 95vw;
+  }
+  img.poster {
+    width: 185px;
   }
 }
 
