@@ -2,6 +2,8 @@
 
 Project website for searching for movies by year and/or title, individual movie data, and people involved in the movies. 
 
+Dependent on API of movies data from 1990 - 2023, from IMDB
+
 ## Frameworks
 React, Vite, Reactstrap + bootstrap
 
